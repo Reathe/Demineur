@@ -57,19 +57,23 @@ void aff_TTMines (TTMines* T){
         for(int j = 0; j < T->n+2; j++) {
             
             if (T->TMines[i][j]==0) {
-                printf("%.0c ",254);;
+                printf("%c ",0x10);;
             }else 
                 printf("%d ",T->TMines[i][j]);;
         }
         printf("\n");
     }
 }
-void main () {
+int main () {
+    char instr;
     printf("1aloalo\n");
     TTMines* T;
     printf("1\n");
+
     T=init_TTMines(T,"");
+    while ()
     aff_TTMines(T);
-    //free_TTMines(T);
+    free_TTMines(T);
     //aff_TTMines(T);
+    exit(0);
  }
