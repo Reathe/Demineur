@@ -1,14 +1,16 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 typedef struct {
     //Le tableau 2d de mines allant de [1][1] à [n][n]
     int ** TMines;
     int n;
 } TTMines;
-void init_TTMines (TTMines* T ,char* difficulte){
+
+TTMines* init_TTMines (TTMines* T ,char* difficulte){
     int nbombe;
+    T=(TTMines*) malloc(sizeof(TTMines));
     if (difficulte=="facile") {
-        //(*T).n=10;
+        (*T).n=10;
         nbombe=10;
     }
     else if (difficulte=="moyen"){
@@ -22,16 +24,16 @@ void init_TTMines (TTMines* T ,char* difficulte){
         nbombe=10;
     }
     //Allocation de mémoire
-    //T=(TTMines*) malloc(sizeof(TTMines));
-    //T->TMines=(int **)malloc((T->n+2)*sizeof(int*));
-    for (int i = 0; i < T->n+2; i++) {
-        //T->TMines[i]=(int*) malloc((T->n+2)*sizeof(int));
+    T->TMines=(int **)malloc((T->n+2)*sizeof(int*));
+
+    for (int i = 0; i < ((*T).n)+2; i++) {
+        T->TMines[i]=(int*) malloc((T->n+2)*sizeof(int));
     }
     //Initialisation à 0
-    
+
     for(int i = 0; i < T->n+2; i++) {
         for(int j = 0; j < T->n+2; j++) {
-            //T->TMines[i][j]=0;
+            T->TMines[i][j]=0;
         }
     }
     
@@ -41,17 +43,21 @@ void init_TTMines (TTMines* T ,char* difficulte){
     {
         /* code */
     }
-    
+    return T;
 }
 void free_TTMines(TTMines* T){
-    //free(T->TMines);
-    //free(T);
+    free(T->TMines);
+    free(T);
 }
 
 void aff_TTMines (TTMines* T){
-    for(int i = 0; i < T->n+2; i++) {
+    for(int i = 0; i < (T->n)+2; i++) {
         for(int j = 0; j < T->n+2; j++) {
-            printf("%d|",T->TMines[i][j]);;
+            
+            if (T->TMines[i][j]==0) {
+                printf("%c ",0x10);;
+            }else 
+                printf("%d ",T->TMines[i][j]);;
         }
         printf("\n");
     }
