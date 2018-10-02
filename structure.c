@@ -108,20 +108,21 @@ void aff_TTMines(TTMines *T)
     {
         for (int j = 0; j < T->n; j++)
         {
-            if (i == T->lin && j == T->col)
+            if (T->Visible[i][j] == 0)
             {
-                printf("■ ");
-            }
-            else if (T->Visible[i][j] == 0)
-            {
-                printf("□ ");
+                printf("□");
             }
             else if (T->Visible[i][j] == -1)
             {
-                printf("⚑ ");
+                printf("⚑");
             }
             else
-                printf("%c ", T->TMines[i][j]);
+                printf("%c", T->TMines[i][j]);
+            if (i == T->lin && j == T->col)
+            {
+                printf("|");
+            }else 
+                printf (" ");
         }
         printf("\n");
     }
