@@ -18,8 +18,9 @@ typedef struct
 TTMines *init_TTMines(TTMines *T, char *difficulte);
 void free_TTMines(TTMines *T);
 void aff_TTMines(TTMines *T);
-int somme_autour(int **t, int lin, int col);
-TTMines *deplace_curseur(TTMines *T, char dir);
+int somme_autour(int **t, int lin, int col,int n);
+TTMines *instruction(TTMines *T, char dir);
+TTMines *visible_0 (TTMines *T,int lin,int col);
 //Fin
 
 TTMines *init_TTMines(TTMines *T, char *difficulte)
@@ -61,13 +62,13 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     }
 
     //Création des mines//
-    int **mines = malloc((T->n + 2) * sizeof(int *));
-    for (int i = 0; i < T->n + 2; i++)
+    int **mines = malloc((T->n) * sizeof(int *));
+    for (int i = 0; i < T->n; i++)
     {
-        mines[i] = malloc((T->n + 2) * sizeof(int));
+        mines[i] = malloc((T->n) * sizeof(int));
     }
-    for (int i = 0; i < T->n + 2; i++)
-        for (int j = 0; j < T->n + 2; j++)
+    for (int i = 0; i < T->n; i++)
+        for (int j = 0; j < T->n; j++)
             mines[i][j] = 0;
     //memset(mines, 0, sizeof(int) *(T->n*T->n + 4*T->n + 4) );
     int lin, col;
@@ -75,8 +76,8 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     {
         do
         {
-            lin = rand() % (T->n + 1) + 1;
-            col = rand() % (T->n + 1) + 1;
+            lin = rand() % (T->n -1) + 1;
+            col = rand() % (T->n -1) + 1;
         } while (mines[lin][col] == 1);
         mines[lin][col] = 1;
     }
@@ -85,12 +86,12 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     {
         for (int j = 0; j < T->n; j++)
         {
-            if (mines[i + 1][j + 1] == 1)
+            if (mines[i][j] == 1)
             {
                 T->TMines[i][j] = 'M';
             }
             else
-                T->TMines[i][j] = '0' + somme_autour(mines, i + 1, j + 1);
+                T->TMines[i][j] = '0' + somme_autour(mines, i, j,T->n);
         }
     }
     //free(mines);
@@ -128,7 +129,7 @@ void aff_TTMines(TTMines *T)
     }
 }
 
-TTMines *deplace_curseur(TTMines *T, char dir)
+TTMines *instruction(TTMines *T, char dir)
 {
     switch (dir)
     {
@@ -165,28 +166,43 @@ TTMines *deplace_curseur(TTMines *T, char dir)
             T->col++;
         break;
     case 'c':
-        T->Visible[T->lin][T->col] = 1;
+        if (T->Visible[T->lin][T->col] != -1){
+            T->Visible[T->lin][T->col] = 1;
+            if (T->TMines[T->lin][T->col]=='0')
+                T=visible_0(T,T->lin,T->col);
+        }
         break;
     case 'f':
-        T->Visible[T->lin][T->col] = -1;
+        if (T->Visible[T->lin][T->col] == -1)
+            T->Visible[T->lin][T->col] = 0;
+        else
+            T->Visible[T->lin][T->col] = -1;
         break;
     }
     return T;
 }
-int somme_autour(int **t, int lin, int col)
+int somme_autour(int **t, int lin, int col,int n)
 {
     //Retourne la somme des entiers autour de la case t[lin][col]
-    //Ne fonctionne que si toutes les cases autour de t[lin][col] sont à l'intérieur du tableau.
     int somme = 0;
     for (int i = lin - 1; i <= lin + 1; i++)
-    {
         for (int j = col - 1; j <= col + 1; j++)
-        {
-            if (i != lin || j != col)
-            {
-                somme += t[i][j];
+            if ((i != lin || j != col) && (i>=0 && i <n && j>=0 && j <n))
+            { //Si pas au milieu et à l'intérieur du tableau
+                somme+=t[i][j];
             }
-        }
-    }
     return somme;
+}
+TTMines *visible_0 (TTMines *T,int lin,int col){
+    if (T->TMines[lin][col]=='0'){
+        T->Visible[lin][col]=1;
+        for (int i = lin - 1; i <= lin + 1; i++)
+            for (int j = col - 1; j <= col + 1; j++)
+                if ((i != lin || j != col) && (i>=0 && i <T->n && j>=0 && j <T->n) && (T->Visible[i][j]==0))
+                { //Si pas au milieu et à l'intérieur du tableau
+                        T=visible_0(T,i,j);
+                }
+    }
+    T->Visible[lin][col]=1;
+    return T;
 }

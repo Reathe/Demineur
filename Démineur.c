@@ -26,7 +26,7 @@ int main()
         //scanf("%c",&dir);
         fflush(stdin);
         dir = getc(stdin);
-        T = deplace_curseur(T, dir);
+        T = instruction(T, dir);
     }
 
     free_TTMines(T);
