@@ -217,9 +217,9 @@ int Verif_drapeau(TTMines *T)
     int somme = 0;
     for (int i = lin - 1; i <= lin + 1; i++)
         for (int j = col - 1; j <= col + 1; j++)
-            if ((i != lin || j != col) && (i>=0 && i <n && j>=0 && j <n))
+            if ((i != lin || j != col) && (i>=0 && i <T->n && j>=0 && j <T->n))
             { //Si pas au milieu et à l'intérieur du tableau
-                somme+=t[i][j];
+                somme+=T->TMines[i][j];
             }
     return somme;
 }
