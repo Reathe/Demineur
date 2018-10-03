@@ -17,7 +17,7 @@ int main()
     srand(time(NULL));
     char dir;
     TTMines *T;
-    T = init_TTMines(T, "u");
+    T = init_TTMines(T, "moyen");
     while (dir != 'g')
     {
         system("clear");
