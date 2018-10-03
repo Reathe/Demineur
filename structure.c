@@ -36,7 +36,7 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     else if (difficulte == "moyen")
     {
         T->n = 25;
-        nbombe = 26;
+        nbombe = 50;
     }
     else if (difficulte == "difficile")
     {
@@ -94,7 +94,7 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
                 T->TMines[i][j] = '0' + somme_autour(mines, i, j,T->n);
         }
     }
-    //free(mines);
+    free(mines);
     return T;
 }
 void free_TTMines(TTMines *T)
@@ -207,4 +207,17 @@ TTMines *visible_0 (TTMines *T,int lin,int col){
     }
     T->Visible[lin][col]=1;
     return T;
+}
+int Verif_drapeau(TTMines *T)
+{
+    int lin=T->lin,col=T->col;
+    //Retourne la somme des entiers autour de la case t[lin][col]
+    int somme = 0;
+    for (int i = lin - 1; i <= lin + 1; i++)
+        for (int j = col - 1; j <= col + 1; j++)
+            if ((i != lin || j != col) && (i>=0 && i <n && j>=0 && j <n))
+            { //Si pas au milieu et à l'intérieur du tableau
+                somme+=t[i][j];
+            }
+    return somme;
 }

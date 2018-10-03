@@ -3,7 +3,6 @@
 #include <string.h>
 #include "fonctions.c"
 #include "structure.c"
-
 /*//Fonctions disponibles
 TTMines* init_TTMines (TTMines* T ,char* difficulte);
 void free_TTMines(TTMines* T);
@@ -25,7 +24,7 @@ int main()
         printf("Lin=%d, col=%d\n", T->lin, T->col);
         //scanf("%c",&dir);
         fflush(stdin);
-        dir = getc(stdin);
+        dir = getchar();
         T = instruction(T, dir);
     }
 
