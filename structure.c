@@ -212,12 +212,12 @@ TTMines *visible_0 (TTMines *T,int lin,int col){
 }
 int Verif_drapeau(TTMines *T)
 {
-    int lin=T->lin,col=T->col;
+    int lin=T->lin,col=T->col,i,j;
     //Retourne la somme des entiers autour de la case t[lin][col]
     int somme = 0;
-    for (int i = lin - 1; i <= lin + 1; i++)
-        for (int j = col - 1; j <= col + 1; j++)
-            if ((i != lin || j != col) && (i>=0 && i <T->n && j>=0 && j <T->n))
+    for (i = lin - 1; i <= lin + 1; i++)
+        for (j = col - 1; j <= col + 1; j++)
+            if ((i != lin || j != col) && (i>=0 && i <T->n && j>=0 && j <T->n) && T->TMines[i][j])
             { //Si pas au milieu et à l'intérieur du tableau
                 somme+=T->TMines[i][j];
             }
