@@ -17,7 +17,7 @@ int main()
     srand(time(NULL));
     char dir;
     TTMines *T;
-    T = init_TTMines(T, "");
+    T = init_TTMines(T, "u");
     while (dir != 'g')
     {
         system("clear");

@@ -30,23 +30,23 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     T->lin = T->col = 0;
     if (difficulte == "facile")
     {
-        (*T).n = 10;
+        (*T).n = 9;
         nbombe = 10;
     }
     else if (difficulte == "moyen")
     {
-        T->n = 10;
-        nbombe = 10;
+        T->n = 25;
+        nbombe = 26;
     }
     else if (difficulte == "difficile")
     {
-        T->n = 10;
-        nbombe = 10;
+        T->n = 50;
+        nbombe = 50;
     }
     else
     {
-        T->n = 10;
-        nbombe = 10;
+        T->n = 100;
+        nbombe = 100;
     }
     T->TMines = malloc((T->n) * sizeof(char *));
     T->Visible = malloc((T->n) * sizeof(int *));
@@ -111,13 +111,15 @@ void aff_TTMines(TTMines *T)
         {
             if (T->Visible[i][j] == 0)
             {
-                printf("□");
+                printf("◼");
             }
             else if (T->Visible[i][j] == -1)
             {
                 printf("⚑");
             }
-            else
+            else if (T->TMines[i][j]=='0')
+                printf("□");
+            else 
                 printf("%c", T->TMines[i][j]);
             if (i == T->lin && j == T->col)
             {
