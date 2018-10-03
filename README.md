@@ -8,8 +8,6 @@ TO DO:
 
 -faire .h + MAKEFILE
 
--double clique sur un chiffre
-
 -menus (règles...)
 
 -tableau rectangles
