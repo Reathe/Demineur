@@ -6,7 +6,7 @@ TO DO:
 
 -fin de partie (victoire/défaite)
 
--faire .h
+-faire .h + MAKEFILE
 
 -double clique sur un chiffre
 
