@@ -51,7 +51,7 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
         T->n = 100;
         nbombe = 1000;
     }
-    T->TMines = malloc((T->n) * sizeof(char *));
+    T->TMines = malloc((T->n) * sizeof(T->TMines));
     T->Visible = malloc((T->n) * sizeof(int *));
     for (i = 0; i < T->n; i++)
     {
@@ -65,7 +65,7 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     }
 
     //Création des mines//
-    int **mines = malloc((T->n) * sizeof(int *));
+    int **mines = malloc(sizeof(*mines) * (T->n));
     for (i = 0; i < T->n; i++)
     {
         mines[i] = malloc((T->n) * sizeof(int));
@@ -101,8 +101,8 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     return T;
 }
 TTMines *decouvrir_case(TTMines *T, int lin, int col)
-{ //Rend la case visible à (lin,col) visible, si c'est un 0,
-  //elle remd visible toutes les cases autour jusqu'à avoir des chiffres
+{   //Rend la case visible à (lin,col) visible, si c'est un 0,
+    //elle remd visible toutes les cases autour jusqu'à avoir des chiffres
     T->Visible[lin][col] = 1;
     if (T->TMines[lin][col] == '0')
         T = visible_0(T, lin, col);

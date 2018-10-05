@@ -23,8 +23,8 @@ int main()
         aff_TTMines(T);
         printf("Lin=%d, col=%d\n", T->lin, T->col);
         //scanf("%c",&dir);
-        fflush(stdin);
-        dir = getchar();
+        //fflush(stdin);
+        dir =getc(stdin);
         T = instruction(T, dir);
     }
 
