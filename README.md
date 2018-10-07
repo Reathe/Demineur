@@ -7,4 +7,3 @@ TO DO:
 	-menus (règles...)
 	-tableau rectangles
 	-(ne pas appuyer sur Enter)
-
