@@ -19,5 +19,5 @@ clean :
 mrproper : clean
 	rm -rf Démineur
 
-play : all
+run : all
 	./Démineur
