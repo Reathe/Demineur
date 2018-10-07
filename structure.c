@@ -10,17 +10,17 @@ TTMines *init_TTMines(char *difficulte)
     int nbombe, i, j;
     T = malloc(sizeof(TTMines));
     T->lin = T->col = 0;
-    if (strcmp(difficulte, "facile"))
+    if (!strcmp(difficulte, "facile"))
     {
         (*T).n = 9;
         nbombe = 10;
     }
-    else if (strcmp(difficulte, "moyen"))
+    else if (!strcmp(difficulte, "moyen"))
     {
         T->n = 25;
         nbombe = 78;
     }
-    else if (strcmp(difficulte, "difficile"))
+    else if (!strcmp(difficulte, "difficile"))
     {
         T->n = 50;
         nbombe = 250;
