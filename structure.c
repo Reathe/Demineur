@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <structure.h>
+#include "structure.h"
 
 TTMines *init_TTMines(char *difficulte)
 {

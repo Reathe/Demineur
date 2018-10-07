@@ -1,8 +1,19 @@
-Démineur: structure.o 
-	gcc Démineur.c -o Démineur.c
-structure.o: structure.h
-	gcc -c structure.c structure.h -o structure.o
-clean:
-	rm -rf *.o
-mrproper: clean
+CC=gcc
+CFLAGS=-Wall -std=c99
+EXEC=Démineur
+
+all : $(EXEC)
+
+Démineur : structure.o Démineur.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c $<
+
+.PHONY : clean mrproper
+
+clean :
+	rm -rf *.o *~ Démineur
+
+mrproper : clean
 	rm -rf Démineur
