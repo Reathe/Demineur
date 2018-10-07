@@ -21,7 +21,7 @@ int main()
     {
         system("clear");
         aff_TTMines(T);
-        printf("Lin=%d, col=%d\n", T->lin, T->col);
+        printf("Lin=%d, col=%d\n", T->lin+1, T->col+1);
         //scanf("%c",&dir);
         //fflush(stdin);
         dir = getc(stdin);
