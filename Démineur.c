@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fonctions.c"
-#include "structure.c"
+#include "structure.h"
 /*//Fonctions disponibles
 TTMines* init_TTMines (TTMines* T ,char* difficulte);
 void free_TTMines(TTMines* T);
@@ -16,7 +16,7 @@ int main()
     srand(time(NULL));
     char dir;
     TTMines *T;
-    T = init_TTMines(T, "moyen");
+    T = init_TTMines("moyen");
     while (dir != 'g')
     {
         system("clear");
@@ -24,7 +24,7 @@ int main()
         printf("Lin=%d, col=%d\n", T->lin, T->col);
         //scanf("%c",&dir);
         //fflush(stdin);
-        dir =getc(stdin);
+        dir = getc(stdin);
         T = instruction(T, dir);
     }
 

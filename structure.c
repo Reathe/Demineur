@@ -2,46 +2,25 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-typedef struct
-{
-    //Le tableau 2d TMines allant de [0][0] à [n-1][n-1],
-    //Le tableau de même taille Visible qui indique
-    //si la case de Tmines du même indice est visible par l'utilisateur
-    //n est la taille des tablaux
-    //lin et col sont la position du "curseur"
-    char **TMines;
-    int **Visible;
-    int n, lin, col;
-} TTMines;
+#include <structure.h>
 
-//Fonctions disponibles
-TTMines *init_TTMines(TTMines *T, char *difficulte);
-void free_TTMines(TTMines *T);
-void aff_TTMines(TTMines *T);
-int somme_autour(int **t, int lin, int col, int n);
-TTMines *instruction(TTMines *T, char dir);
-TTMines *visible_0(TTMines *T, int lin, int col);
-TTMines *drapeau_case(TTMines *T);
-TTMines *decouvrir_case(TTMines *T, int lin, int col);
-TTMines *Verif_drapeau(TTMines *T);
-//Fin
-
-TTMines *init_TTMines(TTMines *T, char *difficulte)
+TTMines *init_TTMines(char *difficulte)
 {
+    TTMines *T;
     int nbombe, i, j;
     T = malloc(sizeof(TTMines));
     T->lin = T->col = 0;
-    if (difficulte == "facile")
+    if (strcmp(difficulte, "facile"))
     {
         (*T).n = 9;
         nbombe = 10;
     }
-    else if (difficulte == "moyen")
+    else if (strcmp(difficulte, "moyen"))
     {
         T->n = 25;
         nbombe = 78;
     }
-    else if (difficulte == "difficile")
+    else if (strcmp(difficulte, "difficile"))
     {
         T->n = 50;
         nbombe = 250;
@@ -101,7 +80,7 @@ TTMines *init_TTMines(TTMines *T, char *difficulte)
     return T;
 }
 TTMines *decouvrir_case(TTMines *T, int lin, int col)
-{   //Rend la case visible à (lin,col) visible, si c'est un 0,
+{ //Rend la case visible à (lin,col) visible, si c'est un 0,
     //elle remd visible toutes les cases autour jusqu'à avoir des chiffres
     T->Visible[lin][col] = 1;
     if (T->TMines[lin][col] == '0')
