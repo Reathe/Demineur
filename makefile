@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-g -Wall -std=c99
-EXEC=Démineur
+EXEC=Demineur
 
 all : $(EXEC)
 
-Démineur : structure.o Démineur.o
+Demineur : structure.o Demineur.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o : %.c
@@ -14,10 +14,10 @@ Démineur : structure.o Démineur.o
 .PHONY : clean mrproper play
 
 clean :
-	rm -rf *.o *~ Démineur
+	rm -rf *.o *~ Demineur
 
 mrproper : clean
-	rm -rf Démineur
+	rm -rf Demineur
 
 run : all
-	./Démineur
+	./Demineur
