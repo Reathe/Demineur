@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fonctions.c"
 #include "structure.c"
 /*//Fonctions disponibles
 TTMines* init_TTMines (TTMines* T ,char* difficulte);
