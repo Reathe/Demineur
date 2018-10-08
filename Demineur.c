@@ -17,6 +17,8 @@ int main()
     char dir;
     TTMines *T;
     T = init_TTMines("moyen");
+    system ("/bin/stty -icanon");
+    printf("bonjour\npourquoi ça ne marche pas ???\n je sais pas\n");
     while (dir != 'g')
     {
         system("clear");
@@ -27,7 +29,7 @@ int main()
         dir = getc(stdin);
         T = instruction(T, dir);
     }
-
+    system ("/bin/stty cooked");
     free_TTMines(T);
     //aff_TTMines(T);
     exit(0);

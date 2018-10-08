@@ -230,7 +230,6 @@ TTMines *Verif_drapeau(TTMines *T)
             }
     if (somme == T->TMines[T->lin][T->col] - '0')
     {
-        printf("oui!");
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i >= 0 && i < T->n && j >= 0 && j < T->n) && T->Visible[i][j] == 0)

@@ -16,8 +16,8 @@ Demineur : structure.o Demineur.o
 clean :
 	rm -rf *.o *~ Demineur
 
-mrproper : clean
-	rm -rf Demineur
+#mrproper : clean
+#	rm -rf Demineur
 
 run : all
 	./Demineur
