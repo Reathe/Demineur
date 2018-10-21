@@ -16,21 +16,24 @@ int main()
     srand(time(NULL));
     char dir;
     TTMines *T;
+    TCurseur *C;
     T = init_TTMines("moyen");
+    C = consCurseur();
     system ("/bin/stty -icanon");
     printf("bonjour\npourquoi ça ne marche pas ???\n je sais pas\n");
     while (dir != 'g')
     {
         system("clear");
-        aff_TTMines(T);
-        printf("Lin=%d, col=%d\n", T->lin+1, T->col+1);
+        aff_TTMines(T,C);
+        printf("Lin=%d, col=%d\n", Lin(C)+1, Col(C)+1);
         //scanf("%c",&dir);
         //fflush(stdin);
         dir = getc(stdin);
-        T = instruction(T, dir);
+        T = instruction(T, C, dir);
     }
     system ("/bin/stty cooked");
     free_TTMines(T);
+    free_TCurseur(C);
     //aff_TTMines(T);
     exit(0);
 }
