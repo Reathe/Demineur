@@ -188,7 +188,7 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
         {
             T = Verif_drapeau(T,C);
         }
-        else if (valTabMines(T, lin, col) != -1)
+        else if (valTabVisible(T, lin, col) != -1)
         {
             T = decouvrir_case(T, lin, col);
         }
