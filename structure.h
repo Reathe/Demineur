@@ -27,8 +27,8 @@ char valTabMines(TTMines *T, int lin, int col);
 void modifTabVisible(TTMines *T, int lin, int col, int nouvVal);
 void modifTabMines(TTMines *T, int lin, int col, char nouvVal);
 
-TCurseur * consCurseur();
-void modifCurseur( TCurseur *C, int lin, int col);
+TCurseur *consCurseur();
+void modifCurseur(TCurseur *C, int lin, int col);
 void free_TCurseur(TCurseur *C);
 int Lin(TCurseur *C);
 int Col(TCurseur *C);

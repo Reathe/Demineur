@@ -19,7 +19,7 @@ TTMines *init_TTMines(char *difficulte)
     {
         T->largeur = 30;
         T->longueur = 40;
-        nbombe = 78;
+        nbombe = 150;
     }
     else if (!strcmp(difficulte, "difficile"))
     {
@@ -62,19 +62,19 @@ TTMines *init_TTMines(char *difficulte)
         {
             if (mines[i][j] == 1)
             {
-                modifTabMines(T,i,j,'M');
+                modifTabMines(T, i, j, 'M');
             }
             else
-                modifTabMines(T,i,j,'0' + somme_autour(mines, i, j, Larg(T), Long(T)));
+                modifTabMines(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
         }
     }
-    
+
     for (i = 0; i < Larg(T); i++)
     {
         free(mines[i]);
     }
     free(mines);
-    
+
     return T;
 }
 TTMines *decouvrir_case(TTMines *T, int lin, int col)
@@ -99,7 +99,7 @@ TTMines *drapeau_case(TTMines *T, TCurseur *C)
 void free_TTMines(TTMines *T)
 {
     int i;
-    for(i = 0; i < Larg(T); i++)
+    for (i = 0; i < Larg(T); i++)
     {
         free(T->TMines[i]);
         free(T->Visible[i]);
@@ -114,7 +114,7 @@ void aff_TTMines(TTMines *T, TCurseur *C)
     int i, j;
     for (i = 0; i < (Larg(T)); i++)
     {
-        if(Col(C) == 0 && i == Lin(C))
+        if (Col(C) == 0 && i == Lin(C))
             printf("|");
         else
             printf(" ");
@@ -153,40 +153,40 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
     {
     case 'z':
         if (lin > 0)
-            modifCurseur(C,Lin(C)-1,Col(C));
+            modifCurseur(C, Lin(C) - 1, Col(C));
         break;
     case 'q':
         if (col > 0)
-            modifCurseur(C,Lin(C),Col(C)-1);
+            modifCurseur(C, Lin(C), Col(C) - 1);
         break;
     case 's':
         if (lin < wid - 1)
-            modifCurseur(C,Lin(C)+1,Col(C));
+            modifCurseur(C, Lin(C) + 1, Col(C));
         break;
     case 'd':
         if (col < len - 1)
-            modifCurseur(C,Lin(C),Col(C)+1);
+            modifCurseur(C, Lin(C), Col(C) + 1);
         break;
     case 'A':
         if (lin > 0)
-            modifCurseur(C,Lin(C)-1,Col(C));
+            modifCurseur(C, Lin(C) - 1, Col(C));
         break;
     case 'D':
         if (col > 0)
-            modifCurseur(C,Lin(C),Col(C)-1);
+            modifCurseur(C, Lin(C), Col(C) - 1);
         break;
     case 'B':
         if (lin < wid - 1)
-            modifCurseur(C,Lin(C)+1,Col(C));
+            modifCurseur(C, Lin(C) + 1, Col(C));
         break;
     case 'C':
         if (col < len - 1)
-            modifCurseur(C,Lin(C),Col(C)+1);
+            modifCurseur(C, Lin(C), Col(C) + 1);
         break;
     case 'c':
         if (valTabVisible(T, lin, col) == 1 && valTabMines(T, lin, col) != '0')
         {
-            T = Verif_drapeau(T,C);
+            T = Verif_drapeau(T, C);
         }
         else if (valTabMines(T, lin, col) != -1)
         {
@@ -194,7 +194,7 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
         }
         break;
     case 'f':
-        T = drapeau_case(T,C);
+        T = drapeau_case(T, C);
         break;
     }
     return T;
@@ -214,7 +214,7 @@ int somme_autour(int **t, int lin, int col, int wid, int len)
 TTMines *visible_0(TTMines *T, int lin, int col)
 {
     int i, j;
-    modifTabVisible(T ,lin ,col, 1);
+    modifTabVisible(T, lin, col, 1);
     if (valTabMines(T, lin, col) == '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
@@ -248,16 +248,16 @@ TTMines *Verif_drapeau(TTMines *T, TCurseur *C)
     return T;
 }
 
-TCurseur * consCurseur()
+TCurseur *consCurseur()
 {
-    TCurseur * C = calloc(1, sizeof(TCurseur));
+    TCurseur *C = calloc(1, sizeof(TCurseur));
     return C;
 }
 
-void modifCurseur( TCurseur *C, int lin, int col)
+void modifCurseur(TCurseur *C, int lin, int col)
 {
-    C->ligne=lin;
-    C->colonne=col;
+    C->ligne = lin;
+    C->colonne = col;
 }
 
 void free_TCurseur(TCurseur *C)
