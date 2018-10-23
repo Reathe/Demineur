@@ -151,35 +151,23 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
         len = Long(T);
     switch (dir)
     {
+    case 'A': //Fall through
     case 'z':
         if (lin > 0)
             modifCurseur(C, Lin(C) - 1, Col(C));
         break;
+    case 'D': //Fall through
     case 'q':
         if (col > 0)
             modifCurseur(C, Lin(C), Col(C) - 1);
         break;
+    case 'B': //Fall through
     case 's':
         if (lin < wid - 1)
             modifCurseur(C, Lin(C) + 1, Col(C));
         break;
+    case 'C': //Fall through
     case 'd':
-        if (col < len - 1)
-            modifCurseur(C, Lin(C), Col(C) + 1);
-        break;
-    case 'A':
-        if (lin > 0)
-            modifCurseur(C, Lin(C) - 1, Col(C));
-        break;
-    case 'D':
-        if (col > 0)
-            modifCurseur(C, Lin(C), Col(C) - 1);
-        break;
-    case 'B':
-        if (lin < wid - 1)
-            modifCurseur(C, Lin(C) + 1, Col(C));
-        break;
-    case 'C':
         if (col < len - 1)
             modifCurseur(C, Lin(C), Col(C) + 1);
         break;
