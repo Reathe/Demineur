@@ -33,18 +33,10 @@ TTMines *init_TTMines(char *difficulte)
         T->longueur = 100;
         nbombe = 1000;
     }
-    T->TMines = calloc(Larg(T), sizeof(char *));
-    T->Visible = calloc(Larg(T), sizeof(int *));
+    T->TMine = calloc(Larg(T)*Long(T), sizeof(TCase));
     //Création des mines//
-    int **mines = calloc(Larg(T), sizeof(*mines));
-    for (i = 0; i < Larg(T); i++)
-    {
-        T->TMines[i] = calloc(Long(T), sizeof(char));
-        T->Visible[i] = calloc(Long(T), sizeof(int));
-        mines[i] = calloc(Long(T), sizeof(int));
-    }
+    int *mines = calloc(Larg(T)*Long(T), sizeof(int));
 
-    //memset(mines, 0, sizeof(int) *(T->n*T->n + 4*T->n + 4) );
     int lin, col;
     for (i = 0; i < nbombe; i++)
     {
@@ -52,26 +44,21 @@ TTMines *init_TTMines(char *difficulte)
         {
             lin = rand() % (Larg(T));
             col = rand() % (Long(T));
-        } while (mines[lin][col] == 1);
-        mines[lin][col] = 1;
+        } while (mines[col+lin*Long(T)] == 1);
+        mines[col+lin*Long(T)] = 1;
     }
 
     for (i = 0; i < Larg(T); i++)
     {
         for (j = 0; j < Long(T); j++)
         {
-            if (mines[i][j] == 1)
+            if (mines[j+i*Long(T)] == 1)
             {
-                modifTabMines(T, i, j, 'M');
+                modifTabCase(T, i, j, 'M');
             }
             else
-                modifTabMines(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
+                modifTabCase(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
         }
-    }
-
-    for (i = 0; i < Larg(T); i++)
-    {
-        free(mines[i]);
     }
     free(mines);
 
@@ -81,9 +68,9 @@ TTMines *decouvrir_case(TTMines *T, int lin, int col)
 { //Rend la case visible à (lin,col) visible, si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
     modifTabVisible(T, lin, col, 1);
-    if (valTabMines(T, lin, col) == '0')
+    if (valTabCase(T, lin, col) == '0')
         T = visible_0(T, lin, col);
-    //else if (valTabMines(T, lin, col) == 'M')
+    //else if (valTabCase(T, lin, col) == 'M')
     //perdu;
     return T;
 }
@@ -98,14 +85,7 @@ TTMines *drapeau_case(TTMines *T, TCurseur *C)
 
 void free_TTMines(TTMines *T)
 {
-    int i;
-    for (i = 0; i < Larg(T); i++)
-    {
-        free(T->TMines[i]);
-        free(T->Visible[i]);
-    }
-    free(T->TMines);
-    free(T->Visible);
+    free(T->TMine);
     free(T);
 }
 
@@ -128,10 +108,10 @@ void aff_TTMines(TTMines *T, TCurseur *C)
             {
                 printf("⚑");
             }
-            else if (valTabMines(T, i, j) == '0')
+            else if (valTabCase(T, i, j) == '0')
                 printf("□");
             else
-                printf("%c", valTabMines(T, i, j));
+                printf("%c", valTabCase(T, i, j));
             if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
             {
                 printf("|");
@@ -154,25 +134,25 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
     case 'A': //Fall through
     case 'z':
         if (lin > 0)
-            modifCurseur(C, Lin(C) - 1, Col(C));
+            modifCurseur(C, lin - 1, col);
         break;
     case 'D': //Fall through
     case 'q':
         if (col > 0)
-            modifCurseur(C, Lin(C), Col(C) - 1);
+            modifCurseur(C, lin, col - 1);
         break;
     case 'B': //Fall through
     case 's':
         if (lin < wid - 1)
-            modifCurseur(C, Lin(C) + 1, Col(C));
+            modifCurseur(C, lin + 1, col);
         break;
     case 'C': //Fall through
     case 'd':
         if (col < len - 1)
-            modifCurseur(C, Lin(C), Col(C) + 1);
+            modifCurseur(C, lin, col + 1);
         break;
     case 'c':
-        if (valTabVisible(T, lin, col) == 1 && valTabMines(T, lin, col) != '0')
+        if (valTabVisible(T, lin, col) == 1 && valTabCase(T, lin, col) != '0')
         {
             T = Verif_drapeau(T, C);
         }
@@ -187,7 +167,7 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
     }
     return T;
 }
-int somme_autour(int **t, int lin, int col, int wid, int len)
+int somme_autour(int *t, int lin, int col, int wid, int len)
 {
     //Retourne la somme des entiers autour de la case t[lin][col]
     int somme = 0, i, j;
@@ -195,7 +175,7 @@ int somme_autour(int **t, int lin, int col, int wid, int len)
         for (j = col - 1; j <= col + 1; j++)
             if ((i != lin || j != col) && (i >= 0 && i < wid && j >= 0 && j < len))
             { //Si pas au milieu et à l'intérieur du tableau
-                somme += t[i][j];
+                somme += t[j+i*len];
             }
     return somme;
 }
@@ -203,7 +183,7 @@ TTMines *visible_0(TTMines *T, int lin, int col)
 {
     int i, j;
     modifTabVisible(T, lin, col, 1);
-    if (valTabMines(T, lin, col) == '0')
+    if (valTabCase(T, lin, col) == '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
@@ -225,7 +205,7 @@ TTMines *Verif_drapeau(TTMines *T, TCurseur *C)
             { //Si pas au milieu et à l'intérieur du tableau
                 somme++;
             }
-    if (somme == valTabMines(T, Lin(C), Col(C)) - '0')
+    if (somme == valTabCase(T, Lin(C), Col(C)) - '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
@@ -273,18 +253,18 @@ int Long(TTMines *T)
 
 int valTabVisible(TTMines *T, int lin, int col)
 {
-    return T->Visible[lin][col];
+    return T->TMine[col+lin*Long(T)].Visible;
 }
-char valTabMines(TTMines *T, int lin, int col)
+char valTabCase(TTMines *T, int lin, int col)
 {
-    return T->TMines[lin][col];
+    return T->TMine[col+lin*Long(T)].Case;
 }
 
 void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
 {
-    T->Visible[lin][col] = nouvVal;
+    T->TMine[col+lin*Long(T)].Visible = nouvVal;
 }
-void modifTabMines(TTMines *T, int lin, int col, char nouvVal)
+void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
 {
-    T->TMines[lin][col] = nouvVal;
+    T->TMine[col+lin*Long(T)].Case = nouvVal;
 }
