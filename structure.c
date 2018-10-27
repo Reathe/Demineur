@@ -4,38 +4,16 @@
 #include <string.h>
 #include "structure.h"
 
-TTMines *init_TTMines(char *difficulte)
+TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 {
     TTMines *T;
-    int nbombe, i, j;
+    int i, j;
     T = malloc(sizeof(TTMines));
-    if (!strcmp(difficulte, "facile"))
-    {
-        T->largeur = 9;
-        T->longueur = 9;
-        nbombe = 10;
-    }
-    else if (!strcmp(difficulte, "moyen"))
-    {
-        T->largeur = 30;
-        T->longueur = 40;
-        nbombe = 150;
-    }
-    else if (!strcmp(difficulte, "difficile"))
-    {
-        T->largeur = 50;
-        T->longueur = 50;
-        nbombe = 250;
-    }
-    else
-    {
-        T->largeur = 100;
-        T->longueur = 100;
-        nbombe = 1000;
-    }
-    T->TMine = calloc(Larg(T)*Long(T), sizeof(TCase));
+    T->largeur = largeur;
+    T->longueur = longueur;
+    T->TMine = calloc(Larg(T) * Long(T), sizeof(TCase));
     //Création des mines//
-    int *mines = calloc(Larg(T)*Long(T), sizeof(int));
+    int *mines = calloc(Larg(T) * Long(T), sizeof(int));
 
     int lin, col;
     for (i = 0; i < nbombe; i++)
@@ -44,15 +22,15 @@ TTMines *init_TTMines(char *difficulte)
         {
             lin = rand() % (Larg(T));
             col = rand() % (Long(T));
-        } while (mines[col+lin*Long(T)] == 1);
-        mines[col+lin*Long(T)] = 1;
+        } while (mines[col + lin * Long(T)] == 1);
+        mines[col + lin * Long(T)] = 1;
     }
 
     for (i = 0; i < Larg(T); i++)
     {
         for (j = 0; j < Long(T); j++)
         {
-            if (mines[j+i*Long(T)] == 1)
+            if (mines[j + i * Long(T)] == 1)
             {
                 modifTabCase(T, i, j, 'M');
             }
@@ -152,11 +130,11 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
             modifCurseur(C, lin, col + 1);
         break;
     case 'c':
-        if (valTabVisible(T, lin, col) == 1 && valTabCase(T, lin, col) != '0')
+        if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
         {
             T = Verif_drapeau(T, C);
         }
-        else if (valTabVisible(T, lin, col) != -1)
+        else if (valTabVisible(T, lin, col) != Drapeau)
         {
             T = decouvrir_case(T, lin, col);
         }
@@ -175,20 +153,20 @@ int somme_autour(int *t, int lin, int col, int wid, int len)
         for (j = col - 1; j <= col + 1; j++)
             if ((i != lin || j != col) && (i >= 0 && i < wid && j >= 0 && j < len))
             { //Si pas au milieu et à l'intérieur du tableau
-                somme += t[j+i*len];
+                somme += t[j + i * len];
             }
     return somme;
 }
 TTMines *visible_0(TTMines *T, int lin, int col)
-{
+{ //Rend visible toutes les cases
     int i, j;
     modifTabVisible(T, lin, col, 1);
     if (valTabCase(T, lin, col) == '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
-                if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == 0))
-                { //Si pas au milieu et à l'intérieur du tableau
+                if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Faux))
+                { //Si pas au milieu et si à l'intérieur du tableau et si la case est invisible
                     T = visible_0(T, i, j);
                 }
     }
@@ -253,18 +231,18 @@ int Long(TTMines *T)
 
 int valTabVisible(TTMines *T, int lin, int col)
 {
-    return T->TMine[col+lin*Long(T)].Visible;
+    return T->TMine[col + lin * Long(T)].Visible;
 }
 char valTabCase(TTMines *T, int lin, int col)
 {
-    return T->TMine[col+lin*Long(T)].Case;
+    return T->TMine[col + lin * Long(T)].Case;
 }
 
 void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
 {
-    T->TMine[col+lin*Long(T)].Visible = nouvVal;
+    T->TMine[col + lin * Long(T)].Visible = nouvVal;
 }
 void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
 {
-    T->TMine[col+lin*Long(T)].Case = nouvVal;
+    T->TMine[col + lin * Long(T)].Case = nouvVal;
 }

@@ -1,16 +1,20 @@
+#define Vrai 1
+#define Faux 0
+#define Drapeau -1
 typedef struct TCase
 {
+    //La case sera affiché ssi Visible == 1
+    //La case est un drapeau si Visible == 0
+    //La case est cachée sinon (Visible == -1)
+    //Le charactère Case qui est le charactère qui doit être affiché à l'utilisateur
     int Visible;
     char Case;
 } TCase;
 
 typedef struct TTMines
 {
-    //Le tableau 2d TMines allant de [0][0] à [n-1][n-1],
-    //Le tableau de même taille Visible qui indique
-    //si la case de Tmines du même indice est visible par l'utilisateur
-    //n est la taille des tablaux
-    //lin et col sont la position du "curseur"
+    //Un tableau de cases (utilisé comme un tableau à deux dimensions)
+    // avec largeur lignes et longueur collonnes
     TCase *TMine;
     int largeur, longueur;
 } TTMines;
@@ -21,7 +25,7 @@ typedef struct TCurseur
 
 //Fonctions disponibles
 
-TTMines *init_TTMines(char *difficulte);
+TTMines *init_TTMines(int longueur, int largeur,int nbombe);
 void free_TTMines(TTMines *T);
 int Larg(TTMines *T);
 int Long(TTMines *T);

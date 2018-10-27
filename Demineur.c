@@ -3,21 +3,13 @@
 #include <string.h>
 #include <time.h>
 #include "structure.h"
-/*//Fonctions disponibles
-TTMines* init_TTMines (TTMines* T ,char* difficulte);
-void free_TTMines(TTMines* T);
-void aff_TTMines (TTMines* T);
-int somme_autour(int t[][],int lin,int col);
-TTMines * deplace_curseur (TTMines * T,char dir);
-//Fin*/
 
-int main()
+int Partie()
 {
-    srand(time(NULL));
     char dir;
     TTMines *T;
     TCurseur *C;
-    T = init_TTMines("moyen");
+    T = init_TTMines(50, 50,50*50/10);
     C = consCurseur();
     system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
     while (dir != 'g')
@@ -33,6 +25,12 @@ int main()
     system("/bin/stty cooked");
     free_TTMines(T);
     free_TCurseur(C);
+    return 1;
+}
+int main()
+{
+    srand(time(NULL));
+    Partie();
     //aff_TTMines(T);
     exit(0);
 }
