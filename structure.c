@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
+#include <stdbool.h>
 #include "structure.h"
 
 TTMines *init_TTMines(int largeur, int longueur, int nbombe)
@@ -11,6 +12,9 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
     T = malloc(sizeof(TTMines));
     T->largeur = largeur;
     T->longueur = longueur;
+    T->nbMines = nbombe;
+    T->nbDrapeau = 0;
+    T->nbCasesRestantes = Larg(T) * Long(T);
     T->TMine = calloc(Larg(T) * Long(T), sizeof(TCase));
     //Création des mines//
     int *mines = calloc(Larg(T) * Long(T), sizeof(int));
@@ -45,19 +49,27 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 TTMines *decouvrir_case(TTMines *T, int lin, int col)
 { //Rend la case visible à (lin,col) visible, si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
-    modifTabVisible(T, lin, col, 1);
     if (valTabCase(T, lin, col) == '0')
         T = visible_0(T, lin, col);
-    //else if (valTabCase(T, lin, col) == 'M')
-    //perdu;
+    else
+    {
+        modifTabVisible(T, lin, col, 1);
+        decrementNombCasesRest(T);
+    }
     return T;
 }
 TTMines *drapeau_case(TTMines *T, TCurseur *C)
 {
     if (valTabVisible(T, Lin(C), Col(C)) == -1)
+    {
         modifTabVisible(T, Lin(C), Col(C), 0);
+        modifNombDrapeau(T, nombDrapeau(T) - 1);
+    }
     else if (valTabVisible(T, Lin(C), Col(C)) == 0)
+    {
         modifTabVisible(T, Lin(C), Col(C), -1);
+        modifNombDrapeau(T, nombDrapeau(T) + 1);
+    }
     return T;
 }
 
@@ -101,7 +113,7 @@ void aff_TTMines(TTMines *T, TCurseur *C)
     }
 }
 
-TTMines *instruction(TTMines *T, TCurseur *C, char dir)
+TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
 {
     int lin = Lin(C),
         col = Col(C),
@@ -137,6 +149,8 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir)
         else if (valTabVisible(T, lin, col) != Drapeau)
         {
             T = decouvrir_case(T, lin, col);
+            if (valTabCase(T, lin, col) == 'M')
+                *defaite = Vrai;
         }
         break;
     case 'f':
@@ -161,6 +175,7 @@ TTMines *visible_0(TTMines *T, int lin, int col)
 { //Rend visible toutes les cases
     int i, j;
     modifTabVisible(T, lin, col, 1);
+    decrementNombCasesRest(T);
     if (valTabCase(T, lin, col) == '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
@@ -245,4 +260,26 @@ void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
 void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
 {
     T->TMine[col + lin * Long(T)].Case = nouvVal;
+}
+
+int nombMines(TTMines *T)
+{
+    return T->nbMines;
+}
+int nombDrapeau(TTMines *T)
+{
+    return T->nbDrapeau;
+}
+int nombCasesRest(TTMines *T)
+{
+    return T->nbCasesRestantes;
+}
+
+void modifNombDrapeau(TTMines *T, int nouvVal)
+{
+    T->nbDrapeau = nouvVal;
+}
+void decrementNombCasesRest(TTMines *T)
+{
+    T->nbCasesRestantes--;
 }
