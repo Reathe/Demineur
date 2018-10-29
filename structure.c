@@ -47,21 +47,21 @@ TTMines *decouvrir_case(TTMines *T, int lin, int col)
         T = visible_0(T, lin, col);
     else
     {
-        modifTabVisible(T, lin, col, 1);
+        modifTabVisible(T, lin, col, Vrai);
         decrementNombCasesRest(T);
     }
     return T;
 }
 TTMines *drapeau_case(TTMines *T, TCurseur *C)
 {
-    if (valTabVisible(T, Lin(C), Col(C)) == -1)
+    if (valTabVisible(T, Lin(C), Col(C)) == Drapeau)
     {
-        modifTabVisible(T, Lin(C), Col(C), 0);
+        modifTabVisible(T, Lin(C), Col(C), Faux);
         modifNombDrapeau(T, nombDrapeau(T) - 1);
     }
-    else if (valTabVisible(T, Lin(C), Col(C)) == 0)
+    else if (valTabVisible(T, Lin(C), Col(C)) == Faux)
     {
-        modifTabVisible(T, Lin(C), Col(C), -1);
+        modifTabVisible(T, Lin(C), Col(C), Drapeau);
         modifNombDrapeau(T, nombDrapeau(T) + 1);
     }
     return T;
@@ -166,7 +166,7 @@ int somme_autour(int *t, int lin, int col, int wid, int len)
 TTMines *visible_0(TTMines *T, int lin, int col)
 { //Rend visible toutes les cases
     int i, j;
-    modifTabVisible(T, lin, col, 1);
+    modifTabVisible(T, lin, col, Vrai);
     decrementNombCasesRest(T);
     if (valTabCase(T, lin, col) == '0')
     {
