@@ -51,6 +51,6 @@ int somme_autour(int *t, int lin, int col, int wid, int len);
 TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
 TTMines *visible_0(TTMines *T, int lin, int col);
 TTMines *drapeau_case(TTMines *T, TCurseur *C);
-TTMines *decouvrir_case(TTMines *T, int lin, int col);
-TTMines *Verif_drapeau(TTMines *T, TCurseur *C);
+TTMines *decouvrir_case(TTMines *T, int lin, int col, bool *defaite);
+TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite);
 //Fin
