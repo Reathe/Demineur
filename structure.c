@@ -31,17 +31,11 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
     }
 
     for (i = 0; i < Larg(T); i++)
-    {
         for (j = 0; j < Long(T); j++)
-        {
             if (mines[j + i * Long(T)] == 1)
-            {
                 modifTabCase(T, i, j, 'M');
-            }
             else
                 modifTabCase(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
-        }
-    }
     free(mines);
 
     return T;
@@ -90,11 +84,11 @@ void aff_TTMines(TTMines *T, TCurseur *C)
             printf(" ");
         for (j = 0; j < Long(T); j++)
         {
-            if (valTabVisible(T, i, j) == 0)
+            if (valTabVisible(T, i, j) == Faux)
             {
                 printf("◼");
             }
-            else if (valTabVisible(T, i, j) == -1)
+            else if (valTabVisible(T, i, j) == Drapeau)
             {
                 printf("⚑");
             }
@@ -103,9 +97,7 @@ void aff_TTMines(TTMines *T, TCurseur *C)
             else
                 printf("%c", valTabCase(T, i, j));
             if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
-            {
                 printf("|");
-            }
             else
                 printf(" ");
         }
@@ -143,7 +135,8 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         break;
     case 'c':
         if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
-        {
+        { //Si la case est déjà visible et
+            //qu'elle est différente de '0'
             T = Verif_drapeau(T, C);
         }
         else if (valTabVisible(T, lin, col) != Drapeau)
@@ -166,9 +159,8 @@ int somme_autour(int *t, int lin, int col, int wid, int len)
     for (i = lin - 1; i <= lin + 1; i++)
         for (j = col - 1; j <= col + 1; j++)
             if ((i != lin || j != col) && (i >= 0 && i < wid && j >= 0 && j < len))
-            { //Si pas au milieu et à l'intérieur du tableau
+                //Si pas au milieu et à l'intérieur du tableau
                 somme += t[j + i * len];
-            }
     return somme;
 }
 TTMines *visible_0(TTMines *T, int lin, int col)
@@ -181,51 +173,51 @@ TTMines *visible_0(TTMines *T, int lin, int col)
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Faux))
-                { //Si pas au milieu et si à l'intérieur du tableau et si la case est invisible
+                    //Si pas au milieu et si à l'intérieur du tableau et si la case est invisible
                     T = visible_0(T, i, j);
-                }
     }
     return T;
 }
 TTMines *Verif_drapeau(TTMines *T, TCurseur *C)
 {
+    //Si le nombre de drapeaux autour de la case est égal à sa valeur
+    //On Rend visible toutes les cases autour de celle-ci
     int lin = Lin(C), col = Col(C), i, j;
-    //Retourne la somme des entiers autour de la case t[lin][col]
-    int somme = 0;
+    int nbDrapeau = 0;
+    //Calcul du nombre de drapeaux autour de la case lin,col
     for (i = lin - 1; i <= lin + 1; i++)
         for (j = col - 1; j <= col + 1; j++)
-            if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == -1))
-            { //Si pas au milieu et à l'intérieur du tableau
-                somme++;
-            }
-    if (somme == valTabCase(T, Lin(C), Col(C)) - '0')
+            if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Drapeau))
+                //Si pas au milieu et à l'intérieur du tableau et si la case i,j est un drapeau
+                nbDrapeau++;
+
+    //Si le nombre de drapeaux est égal au nombre de drapeaux qu'indique la case
+    //On rend visible toutes les cases autour
+    if (nbDrapeau == valTabCase(T, Lin(C), Col(C)) - '0')
     {
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
-                if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == 0)
+                if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == Faux)
                     T = decouvrir_case(T, i, j);
     }
-
     return T;
 }
 
+//Primitives Curseur
 TCurseur *consCurseur()
 {
     TCurseur *C = calloc(1, sizeof(TCurseur));
     return C;
 }
-
 void modifCurseur(TCurseur *C, int lin, int col)
 {
     C->ligne = lin;
     C->colonne = col;
 }
-
 void free_TCurseur(TCurseur *C)
 {
     free(C);
 }
-
 int Lin(TCurseur *C)
 {
     return C->ligne;
@@ -234,7 +226,6 @@ int Col(TCurseur *C)
 {
     return C->colonne;
 }
-
 int Larg(TTMines *T)
 {
     return T->largeur;
@@ -244,6 +235,7 @@ int Long(TTMines *T)
     return T->longueur;
 }
 
+//Primitives Tableau de Cases
 int valTabVisible(TTMines *T, int lin, int col)
 {
     return T->TMine[col + lin * Long(T)].Visible;
@@ -261,7 +253,6 @@ void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
 {
     T->TMine[col + lin * Long(T)].Case = nouvVal;
 }
-
 int nombMines(TTMines *T)
 {
     return T->nbMines;
