@@ -6,4 +6,4 @@ TO DO:
 
 
 Bugs:
-  - Pas de défaite si la mine est découverte par un clic sur un chiffre
+  - Aucun connu

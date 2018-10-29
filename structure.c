@@ -137,7 +137,7 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
         { //Si la case est déjà visible et
             //qu'elle est différente de '0'
-            T = Verif_drapeau(T, C);
+            T = Verif_drapeau(T, C, defaite);
         }
         else if (valTabVisible(T, lin, col) != Drapeau)
         {
@@ -178,7 +178,7 @@ TTMines *visible_0(TTMines *T, int lin, int col)
     }
     return T;
 }
-TTMines *Verif_drapeau(TTMines *T, TCurseur *C)
+TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
 {
     //Si le nombre de drapeaux autour de la case est égal à sa valeur
     //On Rend visible toutes les cases autour de celle-ci
@@ -198,7 +198,11 @@ TTMines *Verif_drapeau(TTMines *T, TCurseur *C)
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == Faux)
+                {
                     T = decouvrir_case(T, i, j);
+                    if (valTabCase(T, i, j) == 'M')
+                        *defaite = Vrai;
+                }
     }
     return T;
 }
