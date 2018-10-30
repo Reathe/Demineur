@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include <stdbool.h>
 #include "structure.h"
-
+//Changer la valeur à 0 si votre tableau est décalé... (parce que la bombe peut prendre 2 charactères à être affiché)
+#define Decalage 1
 TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 {
     TTMines *T;
@@ -75,7 +75,7 @@ void free_TTMines(TTMines *T)
     free(T);
 }
 
-void aff_TTMines(TTMines *T, TCurseur *C)
+void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
 {
     int i, j;
     for (i = 0; i < (Larg(T)); i++)
@@ -86,18 +86,37 @@ void aff_TTMines(TTMines *T, TCurseur *C)
             printf(" ");
         for (j = 0; j < Long(T); j++)
         {
-            if (valTabVisible(T, i, j) == Faux)
-                printf("◼");
-            else if (valTabVisible(T, i, j) == Drapeau)
-                printf("⚑");
-            else if (valTabCase(T, i, j) == '0')
-                printf("□");
+            if (!AfficherTout)
+            {
+                //Pendant la partie
+                if (valTabVisible(T, i, j) == Faux)
+                    printf(charCase);
+                else if (valTabVisible(T, i, j) == Drapeau)
+                    printf(charDrapeau);
+                else if (valTabCase(T, i, j) == '0')
+                    printf(charCaseOuverte);
+                else
+                    printf("%c", valTabCase(T, i, j));
+
+                if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
+                    printf("|");
+                else
+                    printf(" ");
+            }
             else
-                printf("%c", valTabCase(T, i, j));
-            if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
-                printf("|");
-            else
-                printf(" ");
+            {
+                //Après la partie
+                if (valTabCase(T, i, j) == '0')
+                    printf("□");
+                else if (valTabCase(T, i, j) == 'M')
+                    printf(charMine);
+                else
+                    printf("%c", valTabCase(T, i, j));
+                //L'affichage des bombes prend deux charactères
+                //Donc on ne met pas l'espace d'après pour ne pas décaler le tableau
+                if (valTabCase(T, i, j) != 'M' || Decalage)
+                    printf(" ");
+            }
         }
         printf("\n");
     }

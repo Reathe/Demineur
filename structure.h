@@ -1,6 +1,12 @@
+//Visible Valeurs Possible
 #define Vrai 1
 #define Faux 0
 #define Drapeau -1
+//Charactères TCase
+#define charMine "💣"//"M" ou  "💣"
+#define charDrapeau "⚑"
+#define charCase "◼" 
+#define charCaseOuverte "□"
 typedef struct TCase
 {
     //La case sera affiché ssi Visible == 1
@@ -26,7 +32,7 @@ typedef struct TCurseur
 
 //Fonctions disponibles
 
-TTMines *init_TTMines(int longueur, int largeur, int nbombe);
+TTMines *init_TTMines(int largeur, int longueur, int nbombe);
 void free_TTMines(TTMines *T);
 int Larg(TTMines *T);
 int Long(TTMines *T);
@@ -46,7 +52,7 @@ void free_TCurseur(TCurseur *C);
 int Lin(TCurseur *C);
 int Col(TCurseur *C);
 
-void aff_TTMines(TTMines *T, TCurseur *C);
+void aff_TTMines(TTMines *T, TCurseur *C, bool ToutVoir);
 int somme_autour(int *t, int lin, int col, int wid, int len);
 TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
 TTMines *visible_0(TTMines *T, int lin, int col);
