@@ -40,7 +40,7 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 
     return T;
 }
-TTMines *decouvrir_case(TTMines *T, int lin, int col)
+TTMines *decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
 { //Rend la case visible à (lin,col) visible, si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
     if (valTabCase(T, lin, col) == '0')
@@ -49,6 +49,8 @@ TTMines *decouvrir_case(TTMines *T, int lin, int col)
     {
         modifTabVisible(T, lin, col, Vrai);
         decrementNombCasesRest(T);
+        if (valTabCase(T, lin, col) == 'M')
+            *defaite = Vrai;
     }
     return T;
 }
@@ -85,13 +87,9 @@ void aff_TTMines(TTMines *T, TCurseur *C)
         for (j = 0; j < Long(T); j++)
         {
             if (valTabVisible(T, i, j) == Faux)
-            {
                 printf("◼");
-            }
             else if (valTabVisible(T, i, j) == Drapeau)
-            {
                 printf("⚑");
-            }
             else if (valTabCase(T, i, j) == '0')
                 printf("□");
             else
@@ -135,16 +133,11 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         break;
     case 'c':
         if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
-        { //Si la case est déjà visible et
+            //Si la case est déjà visible et
             //qu'elle est différente de '0'
             T = Verif_drapeau(T, C, defaite);
-        }
         else if (valTabVisible(T, lin, col) != Drapeau)
-        {
-            T = decouvrir_case(T, lin, col);
-            if (valTabCase(T, lin, col) == 'M')
-                *defaite = Vrai;
-        }
+            T = decouvrir_case(T, lin, col, defaite);
         break;
     case 'f':
         T = drapeau_case(T, C);
@@ -198,11 +191,7 @@ TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == Faux)
-                {
-                    T = decouvrir_case(T, i, j);
-                    if (valTabCase(T, i, j) == 'M')
-                        *defaite = Vrai;
-                }
+                    T = decouvrir_case(T, i, j, defaite);
     }
     return T;
 }
