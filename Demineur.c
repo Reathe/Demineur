@@ -24,7 +24,7 @@ int Partie(int largeur, int longueur, int nbMines)
         dir = getc(stdin);
         T = instruction(T, C, dir, &defaite);
     }
-    system("/bin/stty cooked"); //Remet les paramètres par défaut
+    system("/bin/stty cooked"); //Remet les paramètres par défaut de la console
     system("clear");
     aff_TTMines(T, C, Vrai);
     if (defaite)

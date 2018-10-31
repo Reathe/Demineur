@@ -105,7 +105,7 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
             }
             else
             {
-                //Après la partie
+                //Après la partie (si on affiche tout)
                 if (valTabCase(T, i, j) == '0')
                     printf("□");
                 else if (valTabCase(T, i, j) == 'M')
