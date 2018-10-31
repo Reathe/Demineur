@@ -3,9 +3,9 @@
 #define Faux 0
 #define Drapeau -1
 //Charactères TCase
-#define charMine "💣"//"M" ou  "💣"
+#define charMine "💣" //"M" ou  "💣"
 #define charDrapeau "⚑"
-#define charCase "◼" 
+#define charCase "◼"
 #define charCaseOuverte "□"
 typedef struct TCase
 {
@@ -20,7 +20,7 @@ typedef struct TCase
 typedef struct TTMines
 {
     //Un tableau de cases (utilisé comme un tableau à deux dimensions)
-    // avec largeur lignes et longueur collonnes
+    // avec largeur lignes et longueur colonnes
     TCase *TMine;
     int largeur, longueur;
     int nbMines, nbDrapeau, nbCasesRestantes;
@@ -54,9 +54,9 @@ int Col(TCurseur *C);
 
 void aff_TTMines(TTMines *T, TCurseur *C, bool ToutVoir);
 int somme_autour(int *t, int lin, int col, int wid, int len);
-TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
-TTMines *visible_0(TTMines *T, int lin, int col);
-TTMines *drapeau_case(TTMines *T, TCurseur *C);
-TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite);
-TTMines *decouvrir_case(TTMines *T, int lin, int col, bool *defaite);
+void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
+void visible_0(TTMines *T, int lin, int col);
+void drapeau_case(TTMines *T, TCurseur *C);
+void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite);
+void decouvrir_case(TTMines *T, int lin, int col, bool *defaite);
 //Fin
