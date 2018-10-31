@@ -10,8 +10,8 @@
 typedef struct TCase
 {
     //La case sera affiché ssi Visible == 1
-    //La case est un drapeau si Visible == 0
-    //La case est cachée sinon (Visible == -1)
+    //La case est cachée si Visible == 0
+    //La case est un drapeau sinon (Visible == -1)
     //Le charactère Case qui est le charactère qui doit être affiché à l'utilisateur
     int Visible;
     char Case;
