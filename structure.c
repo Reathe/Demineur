@@ -40,11 +40,11 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 
     return T;
 }
-TTMines *decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
+void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
 { //Rend la case visible à (lin,col) visible, si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
     if (valTabCase(T, lin, col) == '0')
-        T = visible_0(T, lin, col);
+        visible_0(T, lin, col);
     else
     {
         modifTabVisible(T, lin, col, Vrai);
@@ -52,9 +52,8 @@ TTMines *decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
         if (valTabCase(T, lin, col) == 'M')
             *defaite = Vrai;
     }
-    return T;
 }
-TTMines *drapeau_case(TTMines *T, TCurseur *C)
+void drapeau_case(TTMines *T, TCurseur *C)
 {
     if (valTabVisible(T, Lin(C), Col(C)) == Drapeau)
     {
@@ -66,7 +65,6 @@ TTMines *drapeau_case(TTMines *T, TCurseur *C)
         modifTabVisible(T, Lin(C), Col(C), Drapeau);
         modifNombDrapeau(T, nombDrapeau(T) + 1);
     }
-    return T;
 }
 
 void free_TTMines(TTMines *T)
@@ -80,7 +78,7 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
     int i, j;
     for (i = 0; i < (Larg(T)); i++)
     {
-        if (Col(C) == 0 && i == Lin(C))
+        if (Col(C) == 0 && i == Lin(C) && !AfficherTout)
             printf("|");
         else
             printf(" ");
@@ -107,7 +105,7 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
             {
                 //Après la partie (si on affiche tout)
                 if (valTabCase(T, i, j) == '0')
-                    printf("□");
+                    printf(charCaseOuverte);
                 else if (valTabCase(T, i, j) == 'M')
                     printf(charMine);
                 else
@@ -116,13 +114,13 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
                 //Donc on ne met pas l'espace d'après pour ne pas décaler le tableau
                 if (valTabCase(T, i, j) != 'M' || Decalage)
                     printf(" ");
-            }
+                        }
         }
         printf("\n");
     }
 }
 
-TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
+void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
 {
     int lin = Lin(C),
         col = Col(C),
@@ -154,15 +152,14 @@ TTMines *instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
             //Si la case est déjà visible et
             //qu'elle est différente de '0'
-            T = Verif_drapeau(T, C, defaite);
+            Verif_drapeau(T, C, defaite);
         else if (valTabVisible(T, lin, col) != Drapeau)
-            T = decouvrir_case(T, lin, col, defaite);
+            decouvrir_case(T, lin, col, defaite);
         break;
     case 'f':
-        T = drapeau_case(T, C);
+        drapeau_case(T, C);
         break;
     }
-    return T;
 }
 int somme_autour(int *t, int lin, int col, int wid, int len)
 {
@@ -175,7 +172,7 @@ int somme_autour(int *t, int lin, int col, int wid, int len)
                 somme += t[j + i * len];
     return somme;
 }
-TTMines *visible_0(TTMines *T, int lin, int col)
+void visible_0(TTMines *T, int lin, int col)
 { //Rend visible toutes les cases
     int i, j;
     modifTabVisible(T, lin, col, Vrai);
@@ -186,11 +183,10 @@ TTMines *visible_0(TTMines *T, int lin, int col)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Faux))
                     //Si pas au milieu et si à l'intérieur du tableau et si la case est invisible
-                    T = visible_0(T, i, j);
+                    visible_0(T, i, j);
     }
-    return T;
 }
-TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
+void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
 {
     //Si le nombre de drapeaux autour de la case est égal à sa valeur
     //On Rend visible toutes les cases autour de celle-ci
@@ -210,9 +206,8 @@ TTMines *Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
         for (i = lin - 1; i <= lin + 1; i++)
             for (j = col - 1; j <= col + 1; j++)
                 if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == Faux)
-                    T = decouvrir_case(T, i, j, defaite);
+                    decouvrir_case(T, i, j, defaite);
     }
-    return T;
 }
 
 //Primitives Curseur
@@ -238,6 +233,8 @@ int Col(TCurseur *C)
 {
     return C->colonne;
 }
+
+//Primitives Tableau de Cases
 int Larg(TTMines *T)
 {
     return T->largeur;
@@ -247,7 +244,6 @@ int Long(TTMines *T)
     return T->longueur;
 }
 
-//Primitives Tableau de Cases
 int valTabVisible(TTMines *T, int lin, int col)
 {
     return T->TMine[col + lin * Long(T)].Visible;

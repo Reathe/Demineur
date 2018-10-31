@@ -4,6 +4,13 @@
 #include <stdbool.h>
 #include "structure.h"
 
+void clearBuffer()
+//vide le buffer de l'entrée standard
+{
+    while (getchar() != '\n')
+        ;
+}
+
 int Partie(int largeur, int longueur, int nbMines)
 {
     char dir;
@@ -22,7 +29,7 @@ int Partie(int largeur, int longueur, int nbMines)
         //scanf("%c",&dir);
         //fflush(stdin);
         dir = getc(stdin);
-        T = instruction(T, C, dir, &defaite);
+        instruction(T, C, dir, &defaite);
     }
     system("/bin/stty cooked"); //Remet les paramètres par défaut de la console
     system("clear");
@@ -41,8 +48,13 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 {
     char diff;
     //system("clear");
-    printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
-    scanf("%c", &diff);
+    do
+    {
+        printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
+        scanf("%c", &diff);
+        clearBuffer();
+    } while (diff != 'F' && diff != 'f' && diff != 'M' && diff != 'm' && diff != 'D' && diff != 'd' && diff != 'P' && diff != 'p');
+
     switch (diff)
     {
     case 'F':
@@ -56,32 +68,38 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
         *largeur = 30;
         *nbMines = 170;
         break;
-    case 'd':
     case 'D':
+    case 'd':
         *longueur = 90;
         *largeur = 50;
         *nbMines = 600;
         break;
     case 'P':
     case 'p':
-        do
-        {
-            char c;
+        /*char c;
             int err = 1;
             *longueur = *largeur = *nbMines = -1;
             while (err != 0)
-                err = !scanf("%c", &c);
-
-            printf("Entrez la longueur du champ de mines (nombre de collonnes)\n");
+                err = !scanf("%c", &c);*/
+        do
+        {
+            printf("Entrez la longueur du champ de mines (nombre de colonnes)\n");
             scanf("%d", longueur);
+            clearBuffer();
+        } while (*longueur <= 1 || *longueur > 10000); //si on rentre des caracteres non-numeriques,
+        do                                            //longueur peut avoir une valeur tres grande
+        {
             printf("Entrez la largeur du champ de mines (nombre de lignes)\n");
             scanf("%d", largeur);
+            clearBuffer();
+        } while (*largeur <= 1 || *largeur > 10000); //si on rentre des caracteres non-numeriques,
+        do                                          //largeur peut avoir une valeur tres grande
+        {
             printf("Entrez le nombre de mines\n");
             scanf("%d", nbMines);
-        } while (*longueur < 1 || *largeur < 1 || *nbMines < 1);
+            clearBuffer();
+        } while (*nbMines < 1 || *nbMines > 10000 || *nbMines >= (*largeur) * (*longueur)); //idem qu'au dessus
         break;
-    default:
-        ChoixTaille(longueur, largeur, nbMines);
     }
 }
 int main()
