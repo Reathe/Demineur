@@ -86,13 +86,13 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
             printf("Entrez la longueur du champ de mines (nombre de colonnes)\n");
             scanf("%d", longueur);
             clearBuffer();
-        } while (*longueur < 1 || *longueur > 10000); //si on rentre des caracteres non-numeriques,
+        } while (*longueur <= 1 || *longueur > 10000); //si on rentre des caracteres non-numeriques,
         do                                            //longueur peut avoir une valeur tres grande
         {
             printf("Entrez la largeur du champ de mines (nombre de lignes)\n");
             scanf("%d", largeur);
             clearBuffer();
-        } while (*largeur < 1 || *largeur > 10000); //si on rentre des caracteres non-numeriques,
+        } while (*largeur <= 1 || *largeur > 10000); //si on rentre des caracteres non-numeriques,
         do                                          //largeur peut avoir une valeur tres grande
         {
             printf("Entrez le nombre de mines\n");
