@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 #include "structure.h"
 
 void clearBuffer()
@@ -9,6 +10,17 @@ void clearBuffer()
 {
     while (getchar() != '\n')
         ;
+}
+
+bool checkBuffer()
+//retourne Faux si le buffer n'est pas vide et Vrai sinon
+{
+    if (getchar() != '\n')
+    {
+        clearBuffer();
+        return Faux;
+    }
+    return Vrai;
 }
 
 int Partie(int largeur, int longueur, int nbMines)
@@ -47,6 +59,7 @@ int Partie(int largeur, int longueur, int nbMines)
 void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 {
     char diff;
+    bool bufferVide;
     //system("clear");
     do
     {
@@ -81,20 +94,20 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
         {
             printf("Entrez la longueur du champ de mines (nombre de colonnes)\n");
             scanf("%d", longueur);
-            clearBuffer();
-        } while (*longueur <= 1 || *longueur > 10000); //si on rentre des caracteres non-numeriques,
-        do                                             //longueur peut avoir une valeur tres grande
+            bufferVide = checkBuffer();
+        } while ((*longueur <= 1 || *longueur > 10000) || !bufferVide);
+        do
         {
             printf("Entrez la largeur du champ de mines (nombre de lignes)\n");
             scanf("%d", largeur);
-            clearBuffer();
-        } while (*largeur <= 1 || *largeur > 10000); //si on rentre des caracteres non-numeriques,
-        do                                           //largeur peut avoir une valeur tres grande
+            bufferVide = checkBuffer();
+        } while ((*largeur <= 1 || *largeur > 10000) || !bufferVide);
+        do
         {
             printf("Entrez le nombre de mines\n");
             scanf("%d", nbMines);
-            clearBuffer();
-        } while (*nbMines < 1 || *nbMines > 10000 || *nbMines >= (*largeur) * (*longueur)); //idem qu'au dessus
+            bufferVide = checkBuffer();
+        } while ((*nbMines < 1 || *nbMines > 10000 || *nbMines >= (*largeur) * (*longueur)) || !bufferVide);
         break;
     }
 }
