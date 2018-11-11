@@ -25,6 +25,7 @@ typedef struct TTMines
     int largeur, longueur;
     int nbMines, nbDrapeau, nbCasesRestantes;
 } TTMines;
+
 typedef struct TCurseur
 {
     int ligne, colonne;
@@ -32,26 +33,33 @@ typedef struct TCurseur
 
 //Fonctions disponibles
 
+    //Création/destrucion
 TTMines *init_TTMines(int largeur, int longueur, int nbombe);
 void free_TTMines(TTMines *T);
+
+    //Consultation TTMines
 int Larg(TTMines *T);
 int Long(TTMines *T);
 int valTabVisible(TTMines *T, int lin, int col);
 char valTabCase(TTMines *T, int lin, int col);
-void modifTabVisible(TTMines *T, int lin, int col, int nouvVal);
-void modifTabCase(TTMines *T, int lin, int col, char nouvVal);
 int nombMines(TTMines *T);
 int nombDrapeau(TTMines *T);
 int nombCasesRest(TTMines *T);
+
+    //Modification TTMines
+void modifTabVisible(TTMines *T, int lin, int col, int nouvVal);
+void modifTabCase(TTMines *T, int lin, int col, char nouvVal);
 void modifNombDrapeau(TTMines *T, int nouvVal);
 void decrementNombCasesRest(TTMines *T);
 
+    //Primitives Curseur
 TCurseur *consCurseur();
 void modifCurseur(TCurseur *C, int lin, int col);
 void free_TCurseur(TCurseur *C);
 int Lin(TCurseur *C);
 int Col(TCurseur *C);
 
+    //Autres
 void aff_TTMines(TTMines *T, TCurseur *C, bool ToutVoir);
 int somme_autour(int *t, int lin, int col, int wid, int len);
 void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);

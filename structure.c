@@ -16,9 +16,9 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
     T->nbDrapeau = 0;
     T->nbCasesRestantes = Larg(T) * Long(T);
     T->TMine = calloc(Larg(T) * Long(T), sizeof(TCase));
+
     //Création des mines//
     int *mines = calloc(Larg(T) * Long(T), sizeof(int));
-
     int lin, col;
     for (i = 0; i < nbombe; i++)
     {
@@ -29,7 +29,7 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
         } while (mines[col + lin * Long(T)] == 1);
         mines[col + lin * Long(T)] = 1;
     }
-
+    //Copie des mines dans la structure de données
     for (i = 0; i < Larg(T); i++)
         for (j = 0; j < Long(T); j++)
             if (mines[j + i * Long(T)] == 1)
@@ -41,7 +41,7 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
     return T;
 }
 void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
-{ //Rend la case visible à (lin,col) visible, si c'est un 0,
+{ //Rend la case visible à (lin,col) visible, et si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
     if (valTabCase(T, lin, col) == '0')
         visible_0(T, lin, col);
@@ -55,6 +55,8 @@ void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
 }
 void drapeau_case(TTMines *T, TCurseur *C)
 {
+    //Si la case est déjà un drapeau, l'enlève
+    //Si c'est une case non Visible, met un drapeau
     if (valTabVisible(T, Lin(C), Col(C)) == Drapeau)
     {
         modifTabVisible(T, Lin(C), Col(C), Faux);
@@ -65,12 +67,6 @@ void drapeau_case(TTMines *T, TCurseur *C)
         modifTabVisible(T, Lin(C), Col(C), Drapeau);
         modifNombDrapeau(T, nombDrapeau(T) + 1);
     }
-}
-
-void free_TTMines(TTMines *T)
-{
-    free(T->TMine);
-    free(T);
 }
 
 void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
@@ -114,7 +110,7 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
                 //Donc on ne met pas l'espace d'après pour ne pas décaler le tableau
                 if (valTabCase(T, i, j) != 'M' || Decalage)
                     printf(" ");
-                        }
+            }
         }
         printf("\n");
     }
@@ -234,7 +230,8 @@ int Col(TCurseur *C)
     return C->colonne;
 }
 
-//Primitives Tableau de Cases
+//Primitives TTMines
+    //Consultation TTMines
 int Larg(TTMines *T)
 {
     return T->largeur;
@@ -243,7 +240,6 @@ int Long(TTMines *T)
 {
     return T->longueur;
 }
-
 int valTabVisible(TTMines *T, int lin, int col)
 {
     return T->TMine[col + lin * Long(T)].Visible;
@@ -251,15 +247,6 @@ int valTabVisible(TTMines *T, int lin, int col)
 char valTabCase(TTMines *T, int lin, int col)
 {
     return T->TMine[col + lin * Long(T)].Case;
-}
-
-void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
-{
-    T->TMine[col + lin * Long(T)].Visible = nouvVal;
-}
-void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
-{
-    T->TMine[col + lin * Long(T)].Case = nouvVal;
 }
 int nombMines(TTMines *T)
 {
@@ -274,6 +261,15 @@ int nombCasesRest(TTMines *T)
     return T->nbCasesRestantes;
 }
 
+    //Modif TTMines
+void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
+{
+    T->TMine[col + lin * Long(T)].Visible = nouvVal;
+}
+void modifTabCase(TTMines *T, int lin, int col, char nouvVal)
+{
+    T->TMine[col + lin * Long(T)].Case = nouvVal;
+}
 void modifNombDrapeau(TTMines *T, int nouvVal)
 {
     T->nbDrapeau = nouvVal;
@@ -281,4 +277,10 @@ void modifNombDrapeau(TTMines *T, int nouvVal)
 void decrementNombCasesRest(TTMines *T)
 {
     T->nbCasesRestantes--;
+}
+
+void free_TTMines(TTMines *T)
+{
+    free(T->TMine);
+    free(T);
 }
