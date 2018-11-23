@@ -87,18 +87,18 @@ void drapeau_case(TTMines *T, TCurseur *C)
     }
 }
 
-void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
+void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
 {
     int i, j;
     for (i = 0; i < (Larg(T)); i++)
     {
-        if (Col(C) == 0 && i == Lin(C) && !AfficherTout)
+        if (Col(C) == 0 && i == Lin(C))
             printf("|");
         else
             printf(" ");
         for (j = 0; j < Long(T); j++)
         {
-            if (!AfficherTout)
+            if (moment == Milieu)
             {
                 //Pendant la partie
                 if (valTabVisible(T, i, j) == Faux)
@@ -109,13 +109,8 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
                     printf(charCaseOuverte);
                 else
                     printf("%c", valTabCase(T, i, j));
-
-                if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
-                    printf("|");
-                else
-                    printf(" ");
             }
-            else
+            else if (moment == Fin)
             {
                 //Après la partie (si on affiche tout)
                 if (valTabCase(T, i, j) == '0')
@@ -129,6 +124,15 @@ void aff_TTMines(TTMines *T, TCurseur *C, bool AfficherTout)
                 if (valTabCase(T, i, j) != 'M' || Decalage)
                     printf(" ");
             }
+            else if (moment == Debut)
+            {
+                printf(charCase);
+            }
+            
+            if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
+                printf("|");
+            else
+                printf(" ");
         }
         printf("\n");
     }
