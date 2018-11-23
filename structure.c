@@ -4,10 +4,8 @@
 #include "structure.h"
 //Changer la valeur à 0 si votre tableau est décalé... (parce que la bombe peut prendre 2 charactères à être affiché)
 #define Decalage 1
-TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C)
-{
+TTMines *consTTMines(int largeur, int longueur, int nbombe){
     TTMines *T;
-    int i, j;
     T = malloc(sizeof(TTMines));
     T->largeur = largeur;
     T->longueur = longueur;
@@ -15,7 +13,11 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C)
     T->nbDrapeau = 0;
     T->nbCasesRestantes = Larg(T) * Long(T);
     T->TMine = calloc(Larg(T) * Long(T), sizeof(TCase));
-
+    return T;
+}
+void init_TTMines(TTMines *T, TCurseur *C)
+{
+    int i, j;
     //Création des mines//
     int *mines = calloc(Larg(T) * Long(T), sizeof(int));
 
@@ -23,7 +25,7 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C)
     remplirCaseEtVoisines(mines, C, 2, Larg(T), Long(T));
 
     int lin, col;
-    for (i = 0; i < nbombe; i++)
+    for (i = 0; i < nombMines(T); i++)
     {
         do
         {
@@ -44,8 +46,6 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C)
             else
                 modifTabCase(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
     free(mines);
-
-    return T;
 }
 
 void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len)

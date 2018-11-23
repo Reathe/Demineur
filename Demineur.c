@@ -26,23 +26,24 @@ int Partie(int largeur, int longueur, int nbMines)
 {
     system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
     char dir;
-    TTMines *T;
+    TTMines *T = NULL;
     TCurseur *C;
     bool defaite = Faux;
     C = consCurseur();
+    T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
-    while (dir != 'g' && dir!='c' && !defaite && nombCasesRest(T) != nombMines(T))
+    while (dir != 'g' && dir != 'c' && !defaite)
     {
         system("clear");
-        printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
+        printf("Nombre de mines restantes : %d\n", nbMines);
         aff_TTMines(T, C, Debut);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
         instruction(T, C, dir, &defaite);
     }
 
-    T = init_TTMines(largeur, longueur, nbMines);
-    
+    init_TTMines(T, C);
+
     while (dir != 'g' && !defaite && nombCasesRest(T) != nombMines(T))
     {
         system("clear");

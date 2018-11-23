@@ -43,10 +43,10 @@ typedef struct TCurseur
 //Fonctions disponibles
 
     //Création/destrucion
-TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C);
+void init_TTMines(TTMines *T,TCurseur *C);
 void free_TTMines(TTMines *T);
-
-    //Consultation TTMines
+TTMines *consTTMines(int largeur, int longueur, int nbombe);
+//Consultation TTMines
 int Larg(TTMines *T);
 int Long(TTMines *T);
 int valTabVisible(TTMines *T, int lin, int col);
