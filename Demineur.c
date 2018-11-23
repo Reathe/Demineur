@@ -24,25 +24,37 @@ bool checkBuffer()
 
 int Partie(int largeur, int longueur, int nbMines)
 {
+    system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
     char dir;
     TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
-    T = init_TTMines(largeur, longueur, nbMines, C);
     C = consCurseur();
-    system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
+    //Debut de partie (avant que les bombes soient générées)
+    while (dir != 'g' && dir!='c' && !defaite && nombCasesRest(T) != nombMines(T))
+    {
+        system("clear");
+        printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
+        aff_TTMines(T, C, Debut);
+        printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
+        dir = getc(stdin);
+        instruction(T, C, dir, &defaite);
+    }
+
+    T = init_TTMines(largeur, longueur, nbMines);
+    
     while (dir != 'g' && !defaite && nombCasesRest(T) != nombMines(T))
     {
         system("clear");
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
-        aff_TTMines(T, C, Faux);
+        aff_TTMines(T, C, Milieu);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
         instruction(T, C, dir, &defaite);
     }
     system("/bin/stty cooked"); //Remet les paramètres par défaut de la console
     system("clear");
-    aff_TTMines(T, C, Vrai);
+    aff_TTMines(T, C, Fin);
     if (defaite)
         printf("Vous avez perdu.\n");
     else if (nombCasesRest(T) == nombMines(T))
@@ -57,6 +69,7 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 {
     char diff;
     bool bufferVide;
+    //system("clear");
     do
     {
         printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
