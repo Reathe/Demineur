@@ -39,11 +39,13 @@ int Partie(int largeur, int longueur, int nbMines)
         aff_TTMines(T, C, Debut);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
-        instruction(T, C, dir, &defaite);
+        if (dir!='c')
+            instruction(T, C, dir, &defaite);
     }
 
     init_TTMines(T, C);
-
+    instruction(T, C, dir, &defaite);
+    
     while (dir != 'g' && !defaite && nombCasesRest(T) != nombMines(T))
     {
         system("clear");
