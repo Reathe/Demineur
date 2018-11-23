@@ -1,9 +1,11 @@
+#pragma once
+#include <stdbool.h>
 //Visible Valeurs Possible
 #define Vrai 1
 #define Faux 0
 #define Drapeau -1
 //Charactères TCase
-#define charMine "💣" //"M" ou  "💣"
+#define charMine "M" //"M" ou  "💣"
 #define charDrapeau "⚑"
 #define charCase "◼"
 #define charCaseOuverte "□"
@@ -34,7 +36,7 @@ typedef struct TCurseur
 //Fonctions disponibles
 
     //Création/destrucion
-TTMines *init_TTMines(int largeur, int longueur, int nbombe);
+TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C);
 void free_TTMines(TTMines *T);
 
     //Consultation TTMines
@@ -67,4 +69,5 @@ void visible_0(TTMines *T, int lin, int col);
 void drapeau_case(TTMines *T, TCurseur *C);
 void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite);
 void decouvrir_case(TTMines *T, int lin, int col, bool *defaite);
+void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len);
 //Fin

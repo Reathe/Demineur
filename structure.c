@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 #include "structure.h"
 //Changer la valeur à 0 si votre tableau est décalé... (parce que la bombe peut prendre 2 charactères à être affiché)
 #define Decalage 1
-TTMines *init_TTMines(int largeur, int longueur, int nbombe)
+TTMines *init_TTMines(int largeur, int longueur, int nbombe, TCurseur *C)
 {
     TTMines *T;
     int i, j;
@@ -19,6 +18,10 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 
     //Création des mines//
     int *mines = calloc(Larg(T) * Long(T), sizeof(int));
+
+    //On met des 2 à la case de départ et ses voisines pour ne pas y mettre de bombe
+    remplirCaseEtVoisines(mines, C, 2, Larg(T), Long(T));
+
     int lin, col;
     for (i = 0; i < nbombe; i++)
     {
@@ -26,9 +29,13 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
         {
             lin = rand() % (Larg(T));
             col = rand() % (Long(T));
-        } while (mines[col + lin * Long(T)] == 1);
+        } while (mines[col + lin * Long(T)] == 1 && mines[col + lin * Long(T)] == 2);
         mines[col + lin * Long(T)] = 1;
     }
+    
+    //On remet des 0 à la place des 2
+    remplirCaseEtVoisines(mines, C, 0, Larg(T), Long(T));
+
     //Copie des mines dans la structure de données
     for (i = 0; i < Larg(T); i++)
         for (j = 0; j < Long(T); j++)
@@ -40,6 +47,17 @@ TTMines *init_TTMines(int largeur, int longueur, int nbombe)
 
     return T;
 }
+
+void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len)
+{
+    int i, j;
+    for (i = Lin(C) - 1; i <= Lin(C) + 1; i++)
+        for (j = Col(C) - 1; j <= Col(C) + 1; j++)
+            if (i >= 0 && i < wid && j >= 0 && j < len)
+                //Si à l'intérieur du tableau
+                t[j + i * len] = val;
+}
+
 void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
 { //Rend la case visible à (lin,col) visible, et si c'est un 0,
     //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
@@ -231,7 +249,7 @@ int Col(TCurseur *C)
 }
 
 //Primitives TTMines
-    //Consultation TTMines
+//Consultation TTMines
 int Larg(TTMines *T)
 {
     return T->largeur;
@@ -261,7 +279,7 @@ int nombCasesRest(TTMines *T)
     return T->nbCasesRestantes;
 }
 
-    //Modif TTMines
+//Modif TTMines
 void modifTabVisible(TTMines *T, int lin, int col, int nouvVal)
 {
     T->TMine[col + lin * Long(T)].Visible = nouvVal;

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 #include <string.h>
 #include "structure.h"
 
@@ -29,7 +28,7 @@ int Partie(int largeur, int longueur, int nbMines)
     TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
-    T = init_TTMines(largeur, longueur, nbMines);
+    T = init_TTMines(largeur, longueur, nbMines, C);
     C = consCurseur();
     system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
     while (dir != 'g' && !defaite && nombCasesRest(T) != nombMines(T))
@@ -38,8 +37,6 @@ int Partie(int largeur, int longueur, int nbMines)
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
         aff_TTMines(T, C, Faux);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
-        //scanf("%c",&dir);
-        //fflush(stdin);
         dir = getc(stdin);
         instruction(T, C, dir, &defaite);
     }
@@ -60,7 +57,6 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 {
     char diff;
     bool bufferVide;
-    //system("clear");
     do
     {
         printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
@@ -95,19 +91,19 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
             printf("Entrez la longueur du champ de mines (nombre de colonnes)\n");
             scanf("%d", longueur);
             bufferVide = checkBuffer();
-        } while ((*longueur <= 1 || *longueur > 10000) || !bufferVide);
+        } while (*longueur < 4 || *longueur > 256 || !bufferVide);
         do
         {
             printf("Entrez la largeur du champ de mines (nombre de lignes)\n");
             scanf("%d", largeur);
             bufferVide = checkBuffer();
-        } while ((*largeur <= 1 || *largeur > 10000) || !bufferVide);
+        } while (*largeur < 4 || *largeur > 256 || !bufferVide);
         do
         {
             printf("Entrez le nombre de mines\n");
             scanf("%d", nbMines);
             bufferVide = checkBuffer();
-        } while ((*nbMines < 1 || *nbMines > 10000 || *nbMines >= (*largeur) * (*longueur)) || !bufferVide);
+        } while (*nbMines < 1 || *nbMines >= (*largeur) * (*longueur) - 9 || !bufferVide);
         break;
     }
 }
