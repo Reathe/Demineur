@@ -9,6 +9,13 @@
 #define charDrapeau "⚑"
 #define charCase "◼"
 #define charCaseOuverte "□"
+typedef enum
+{
+    Debut,
+    Milieu,
+    Fin
+} TMomentPartie;
+
 typedef struct TCase
 {
     //La case sera affiché ssi Visible == 1
@@ -62,7 +69,7 @@ int Lin(TCurseur *C);
 int Col(TCurseur *C);
 
     //Autres
-void aff_TTMines(TTMines *T, TCurseur *C, bool ToutVoir);
+void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment);
 int somme_autour(int *t, int lin, int col, int wid, int len);
 void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
 void visible_0(TTMines *T, int lin, int col);
