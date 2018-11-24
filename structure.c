@@ -119,14 +119,19 @@ void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
                     printf(charMine);
                 else
                     printf("%c", valTabCase(T, i, j));
+                /*
                 //L'affichage des bombes prend deux charactères
                 //Donc on ne met pas l'espace d'après pour ne pas décaler le tableau
                 if (valTabCase(T, i, j) != 'M' || Decalage)
                     printf(" ");
+                */
             }
             else if (moment == Debut)
             {
-                printf(charCase);
+                if (valTabVisible(T, i, j) == Drapeau)
+                    printf(charDrapeau);
+                else
+                    printf(charCase);
             }
             
             if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
