@@ -172,7 +172,7 @@ void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
             modifCurseur(C, lin, col + 1);
         break;
     case 'c':
-        if (valTabVisible(T, lin, col) && valTabCase(T, lin, col) != '0')
+        if (valTabVisible(T, lin, col) == Vrai && valTabCase(T, lin, col) != '0')
             //Si la case est déjà visible et
             //qu'elle est différente de '0'
             Verif_drapeau(T, C, defaite);

@@ -26,16 +26,16 @@ int Partie(int largeur, int longueur, int nbMines)
 {
     system("/bin/stty -icanon"); //Permet d'éviter d'appuyer sur Enter
     char dir;
-    TTMines *T = NULL;
+    TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
     C = consCurseur();
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
-    while (dir != 'g' && dir != 'c' && !defaite)
+    while (dir != 'g' && (dir != 'c' || valTabVisible(T, Lin(C), Col(C)) == Drapeau))
     {
         system("clear");
-        printf("Nombre de mines restantes : %d\n", nbMines);
+        printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
         aff_TTMines(T, C, Debut);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
