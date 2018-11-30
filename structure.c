@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structure.h"
-//Changer la valeur à 0 si votre tableau est décalé... (parce que la bombe peut prendre 2 charactères à être affiché)
-#define Decalage 1
-TTMines *consTTMines(int largeur, int longueur, int nbombe){
+
+TTMines *consTTMines(int largeur, int longueur, int nbombe)
+//Construit un TTMines avec une grille vide et sa largeur, longueur et nombre de bombe
+{
     TTMines *T;
     T = malloc(sizeof(TTMines));
     T->largeur = largeur;
@@ -16,6 +17,7 @@ TTMines *consTTMines(int largeur, int longueur, int nbombe){
     return T;
 }
 void init_TTMines(TTMines *T, TCurseur *C)
+//Initialise la grille du démineur
 {
     int i, j;
     //Création des mines//
@@ -49,6 +51,7 @@ void init_TTMines(TTMines *T, TCurseur *C)
 }
 
 void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len)
+//Remplit une case et ses 8 voisines de la valeur val
 {
     int i, j;
     for (i = Lin(C) - 1; i <= Lin(C) + 1; i++)
@@ -59,8 +62,9 @@ void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len)
 }
 
 void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
-{ //Rend la case visible à (lin,col) visible, et si c'est un 0,
-    //elle rend visible toutes les cases autour jusqu'à avoir des chiffres
+//Rend la case visible à (lin,col) visible, et si c'est un 0,
+//elle rend visible toutes les cases autour jusqu'à avoir des chiffres
+{
     if (valTabCase(T, lin, col) == '0')
         visible_0(T, lin, col);
     else
@@ -72,9 +76,9 @@ void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
     }
 }
 void drapeau_case(TTMines *T, TCurseur *C)
+//Si la case est déjà un drapeau, l'enlève
+//Si c'est une case non Visible, met un drapeau
 {
-    //Si la case est déjà un drapeau, l'enlève
-    //Si c'est une case non Visible, met un drapeau
     if (valTabVisible(T, Lin(C), Col(C)) == Drapeau)
     {
         modifTabVisible(T, Lin(C), Col(C), Faux);
@@ -88,6 +92,7 @@ void drapeau_case(TTMines *T, TCurseur *C)
 }
 
 void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
+//Affiche la grille avec le curseur en fonction du moement de la partie
 {
     int i, j;
     for (i = 0; i < (Larg(T)); i++)
@@ -119,12 +124,6 @@ void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
                     printf(charMine);
                 else
                     printf("%c", valTabCase(T, i, j));
-                /*
-                //L'affichage des bombes prend deux charactères
-                //Donc on ne met pas l'espace d'après pour ne pas décaler le tableau
-                if (valTabCase(T, i, j) != 'M' || Decalage)
-                    printf(" ");
-                */
             }
             else if (moment == Debut)
             {
@@ -144,6 +143,8 @@ void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
 }
 
 void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
+//Realise les opérations sur la grille et le curseur
+//en fonction de l'instruction qu'on lui donne
 {
     int lin = Lin(C),
         col = Col(C),
@@ -185,8 +186,8 @@ void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
     }
 }
 int somme_autour(int *t, int lin, int col, int wid, int len)
+//Retourne la somme des entiers autour de la case t[lin][col]
 {
-    //Retourne la somme des entiers autour de la case t[lin][col]
     int somme = 0, i, j;
     for (i = lin - 1; i <= lin + 1; i++)
         for (j = col - 1; j <= col + 1; j++)
@@ -196,7 +197,8 @@ int somme_autour(int *t, int lin, int col, int wid, int len)
     return somme;
 }
 void visible_0(TTMines *T, int lin, int col)
-{ //Rend visible toutes les cases
+//Rend visible toutes les cases
+{
     int i, j;
     modifTabVisible(T, lin, col, Vrai);
     decrementNombCasesRest(T);
@@ -209,10 +211,11 @@ void visible_0(TTMines *T, int lin, int col)
                     visible_0(T, i, j);
     }
 }
+
 void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
+//Si le nombre de drapeaux autour de la case est égal à sa valeur
+//On Rend visible toutes les cases autour de celle-ci
 {
-    //Si le nombre de drapeaux autour de la case est égal à sa valeur
-    //On Rend visible toutes les cases autour de celle-ci
     int lin = Lin(C), col = Col(C), i, j;
     int nbDrapeau = 0;
     //Calcul du nombre de drapeaux autour de la case lin,col
