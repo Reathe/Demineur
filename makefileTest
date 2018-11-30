@@ -1,0 +1,29 @@
+CC=gcc
+CFLAGS=-g -Wall -std=c99
+EXEC=Demineur
+
+all : $(EXEC)
+
+Demineur : structure.o Demineur.o GestionProfile
+	$(CC) $(CFLAGS) -o $@ CompileOutput/structure.o CompileOutput/Demineur.o CompileOutput/GestionProfile
+
+GestionProfile : io.o tadlst.o tadpro.o
+	$(CC) $(CFLAGS) -c CompileOutput/io.o CompileOutput/tadlst.o CompileOutput/tadpro.o
+
+%.o : GestionProfiles/%.c
+	$(CC) $(CFLAGS) -c $< -o CompileOutput/$@
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o CompileOutput/$@
+
+
+.PHONY : clean run
+
+clean :
+	rm -rf *.o *~ $(EXEC) CompileOutput/*.o 
+
+#mrproper : clean
+#	rm -rf Demineur
+
+run : all
+	./$(EXEC)
