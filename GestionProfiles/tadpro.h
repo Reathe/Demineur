@@ -8,13 +8,13 @@
    @brief le TAD d'un profil.
    name : le nom de la personne,
    forename : le prénom de la personne,
-   num : le numéro d'inscription de la personne.
+   score : le score de la personne.
 */
 #define sz 20
 typedef struct {
   char name[sz];
   char forename[sz];
-  int num;
+  int score;
 } profile_t;
 
 /**
@@ -26,8 +26,8 @@ typedef struct {
    writeName : ecriture dans le champ name,
    readForename : lecture du champ forename,
    writeForename : ecriture dans le champ forename,
-   readNum : lecture du champ num,
-   writeNum : ecriture dans le champ num,
+   readScore : lecture du champ score,
+   writeScore : ecriture dans le champ score,
 */
 profile_t * consEmptyProfile();
 
@@ -43,8 +43,8 @@ char * readForename( const profile_t * );
 
 void writeForename( const char *, profile_t * );
 
-int readNum( const profile_t * );
+int readScore( const profile_t * );
 
-void writeNum( const int, profile_t * );
+void writeScore( const int, profile_t * );
 
 void printPro( const profile_t * );

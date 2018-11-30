@@ -13,14 +13,14 @@ profile_t * consEmptyProfile() {
   return P;
 }
 
-profile_t * consProfile( char * name, char * forename, int num ) {
+profile_t * consProfile( char * name, char * forename, int score ) {
   profile_t * P = (profile_t *) calloc( 1, sizeof( profile_t ) );
 
   assert( P != NULL );
 
   strcpy( P->name, name );
   strcpy( P->forename, forename );
-  P->num = num;
+  P->score = score;
 
   return P;
 }
@@ -56,18 +56,18 @@ void writeForename( const char * forename, profile_t * P ) {
   strcpy( P->name, forename );
 }
 
-int readNum( const profile_t * P ) {
+int readScore( const profile_t * P ) {
   assert( P != NULL );
 
-  return P->num;
+  return P->score;
 }
 
-void writeNum( const int num, profile_t * P ) {
+void writeScore( const int Score, profile_t * P ) {
   assert( P != NULL );
 
-  P->num = num;
+  P->score = Score;
 }
 
 void printPro( const profile_t * P ) {
-  printf( "(%s %s %d)", P->forename, P->name, P->num );
+  printf( "(%s %s %d)", P->forename, P->name, P->score );
 }

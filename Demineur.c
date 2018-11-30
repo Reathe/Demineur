@@ -3,6 +3,9 @@
 #include <time.h>
 #include <string.h>
 #include "structure.h"
+#include "GestionProfiles/io.h"
+#include "GestionProfiles/tadlst.h"
+#include "GestionProfiles/tadpro.h"
 
 void clearBuffer()
 //vide le buffer de l'entrée standard

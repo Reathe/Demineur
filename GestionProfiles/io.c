@@ -13,8 +13,8 @@ lst_t fscanLst( const char * filename ) {
   for( int pos = 1; !feof( fd ); pos += 1 ) {
     profile_t * P = (profile_t *) calloc( 1, sizeof( profile_t ) ); //!! calloc intialise la mémoire à 0
     
-    fscanf( fd, " %d", &(P->num) );
-    if( P->num == 0 ) {
+    fscanf( fd, " %d", &(P->score) );
+    if( P->score == 0 ) {
       free( P );
     } else {
       fscanf( fd, " %s", P->name );
@@ -52,7 +52,7 @@ lst_t freadLst( const char * filename ) {
     profile_t * P = (profile_t *) calloc( 1, sizeof(profile_t) );
     
     fread( P, sizeof( profile_t ), 1, fd );
-    if( P->num == 0 ) {
+    if( P->score == 0 ) {
       free( P );
     } else {
       ins( &L, P, pos );
