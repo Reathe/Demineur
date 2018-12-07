@@ -172,7 +172,7 @@ void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         if (col < len - 1)
             modifCurseur(C, lin, col + 1);
         break;
-    case 'g':
+    case DecouvrirCase:
         if (valTabVisible(T, lin, col) == Vrai && valTabCase(T, lin, col) != '0')
             //Si la case est déjà visible et
             //qu'elle est différente de '0'
@@ -180,7 +180,7 @@ void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
         else if (valTabVisible(T, lin, col) != Drapeau)
             decouvrir_case(T, lin, col, defaite);
         break;
-    case 'f':
+    case PoserDrapeau:
         drapeau_case(T, C);
         break;
     }

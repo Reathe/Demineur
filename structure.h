@@ -9,6 +9,10 @@
 #define charDrapeau "⚑"
 #define charCase "◼"
 #define charCaseOuverte "□"
+//Charactères utilisateurs
+#define DecouvrirCase 'g'
+#define PoserDrapeau 'f'
+#define Quitter 'p' 
 typedef enum
 {
     Debut,

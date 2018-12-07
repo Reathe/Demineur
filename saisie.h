@@ -9,5 +9,8 @@ bool checkBuffer();
 void ChoixTaille(int *largeur, int *longueur, int *nbMines);
 //saisie la taille de la grille et le nombre de mines
 
-char* getFilename(int largeur, int longueur, int nbMines);
+char* getFilename(int largeur, int longueur, int nbMines, char* fileName);
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
+
+void Bienvenue();
+void Regles();

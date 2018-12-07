@@ -18,21 +18,21 @@ int Partie(int largeur, int longueur, int nbMines)
     C = consCurseur();
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
-    while (dir != 'p' && (dir != 'g' || valTabVisible(T, Lin(C), Col(C)) == Drapeau))
+    while (dir != Quitter && (dir != DecouvrirCase || valTabVisible(T, Lin(C), Col(C)) == Drapeau))
     {
         system("clear");
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
         aff_TTMines(T, C, Debut);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
-        if (dir!='g')
+        if (dir!=DecouvrirCase)
             instruction(T, C, dir, &defaite);
     }
 
     init_TTMines(T, C);
     instruction(T, C, dir, &defaite);
     
-    while (dir != 'p' && !defaite && nombCasesRest(T) != nombMines(T))
+    while (dir != Quitter && !defaite && nombCasesRest(T) != nombMines(T))
     {
         system("clear");
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
@@ -48,7 +48,7 @@ int Partie(int largeur, int longueur, int nbMines)
         printf("Vous avez perdu.\n");
     else if (nombCasesRest(T) == nombMines(T))
         printf("Vous avez gagné !\n");
-    else if (dir == 'p')
+    else if (dir == Quitter)
         printf("Vous avez quitté la partie en cours.\n");
     free_TTMines(T);
     free_TCurseur(C);
@@ -58,8 +58,15 @@ int Partie(int largeur, int longueur, int nbMines)
 int main()
 {
     srand(time(NULL));
+    system("clear");
+    Bienvenue();
+    Regles();
     int largeur, longueur, nbMines;
     ChoixTaille(&largeur, &longueur, &nbMines);
+    char ch[20];
+    getFilename(largeur, longueur, nbMines, ch);
+    printf("%s", ch);
     Partie(largeur, longueur, nbMines);
     exit(0);
 }
+

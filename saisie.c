@@ -76,8 +76,24 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
     }
 }
 
-char* getFilename(int largeur, int longueur, int nbMines)
+void getFilename(int largeur, int longueur, int nbMines, char *fileName)
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
 {
+    sprintf(fileName, "%d_%d_%d.txt", largeur, longueur, nbMines);
+}
 
+void Bienvenue()
+{
+    printf("Bienvenue dans El Famoso Démineur © Boucksom/Bachourian.\n");
+}
+void Regles()
+{
+    printf("Les règles sont simples. Survivez, ou mourrez. Vous devez trouver l'emplacement de toutes les mines sans tout faire exploser...\
+Vos outils seront les suivants: \n\
+-Votre clavier \n\
+-votre ordinateur (sous linux pour la meilleure expérience utilsateur)\n\
+-un cerveau\n\
+Même si ça n'est pas donné à tout le monde, nous auront besoin de ces trois choses !\n\
+Vous utiliserez les fleches (ou zqsd) pour vous deplacer,la touche %c pour découvrir une case, la touche %c pour poser un drapeau, et la touche %c pour quitter.\n\n",
+           DecouvrirCase, PoserDrapeau, Quitter);
 }
