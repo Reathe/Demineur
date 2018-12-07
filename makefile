@@ -4,7 +4,7 @@ EXEC=Demineur
 
 all : $(EXEC)
 
-Demineur : structure.o Demineur.o io.o tadlst.o tadpro.o
+Demineur : structure.o Demineur.o saisie.o io.o tadlst.o tadpro.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 #GestionProfile : io.o tadlst.o tadpro.o
