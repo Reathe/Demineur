@@ -15,6 +15,7 @@ int Partie(int largeur, int longueur, int nbMines)
     TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
+    int tempsDebut = clock(), score = 0;
     C = consCurseur();
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
@@ -47,12 +48,15 @@ int Partie(int largeur, int longueur, int nbMines)
     if (defaite)
         printf("Vous avez perdu.\n");
     else if (nombCasesRest(T) == nombMines(T))
+    {
         printf("Vous avez gagné !\n");
+        score = clock() - tempsDebut;
+    }
     else if (dir == Quitter)
         printf("Vous avez quitté la partie en cours.\n");
     free_TTMines(T);
     free_TCurseur(C);
-    return 1;
+    return score;
 }
 
 int main()
@@ -63,10 +67,7 @@ int main()
     Regles();
     int largeur, longueur, nbMines;
     ChoixTaille(&largeur, &longueur, &nbMines);
-    char ch[20];
-    getFilename(largeur, longueur, nbMines, ch);
-    printf("%s", ch);
-    Partie(largeur, longueur, nbMines);
+    score = Partie(largeur, longueur, nbMines);
     exit(0);
 }
 
