@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GestionProfiles/tadlst.h"
+
 void clearBuffer();
 //vide le buffer de l'entrée standard
 
@@ -11,6 +13,9 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines);
 
 char* getFilename(int largeur, int longueur, int nbMines);
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
+
+int Classement(int score, lst_t L);
+//retourne le classement d'un joueur
 
 void Bienvenue();
 void Regles();

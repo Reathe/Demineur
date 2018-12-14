@@ -65,7 +65,7 @@ int main()
     system("clear");
     Bienvenue();
     Regles();
-    int largeur, longueur, nbMines;
+    int largeur, longueur, nbMines, score;
     ChoixTaille(&largeur, &longueur, &nbMines);
     score = Partie(largeur, longueur, nbMines);
     exit(0);

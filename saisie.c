@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "structure.h"
+#include "GestionProfiles/tadlst.h"
 
 void clearBuffer()
 //vide le buffer de l'entrée standard
@@ -84,6 +85,12 @@ char* getFilename(int largeur, int longueur, int nbMines)
     char* res=calloc(1+strlen(ch),sizeof(char));
     strcpy(res, ch);
     return res;
+}
+
+int Classement(int score, lst_t L)
+//retourne le classement d'un joueur
+{
+    
 }
 
 void Bienvenue()

@@ -3,62 +3,86 @@
 
 #include "tadpro.h"
 
-lst_t fscanLst( const char * filename ) {
-  FILE * fd = fopen( filename, "rt" );
+lst_t fscanLst(const char *filename)
+{
+	FILE *fd = fopen(filename, "r");
 
-  assert( fd != NULL );
+	assert(fd != NULL);
 
-  lst_t L = consVide();
+	lst_t L = consVide();
 
-  for( int pos = 1; !feof( fd ); pos += 1 ) {
-    profile_t * P = (profile_t *) calloc( 1, sizeof( profile_t ) ); //!! calloc intialise la mémoire à 0
-    
-    fscanf( fd, " %d", &(P->score) );
-    if( P->score == 0 ) {
-      free( P );
-    } else {
-      fscanf( fd, " %s", P->name );
-      fscanf( fd, " %s", P->forename );
+	for (int pos = 1; !feof(fd); pos += 1)
+	{
+		profile_t *P = (profile_t *)calloc(1, sizeof(profile_t)); //!! calloc intialise la mémoire à 0
 
-      ins( &L, P, pos );
-    }
-  }
+		fscanf(fd, " %d", &(P->score));
+		if (P->score == 0)
+		{
+			free(P);
+		}
+		else
+		{
+			fscanf(fd, " %s", P->name);
+			fscanf(fd, " %s", P->forename);
 
-  fclose( fd );
+			ins(&L, P, pos);
+		}
+	}
 
-  return L;
+	fclose(fd);
+
+	return L;
 }
 
-void fwriteLst( lst_t L, const char * filename ) {
-  FILE * fd = fopen( filename, "wb" );
+void fprintLst(lst_t L, const char *filename)
+{
+	FILE *fd = fopen(filename, "w");
 
-  assert( fd != NULL );
+	assert(fd != NULL);
 
-  for( ; !estVide( L ); L = reste( L ) ) {
-    fwrite( tete( L ), sizeof( profile_t ), 1, fd );
-  }
-
-  fclose( fd );
+	for (; !estVide(L); L = reste(L))
+	{
+		fprintf(fd, " %d %s %s", tete(L)->score, tete(L)->name, tete(L)->forename);
+	}
+	fclose(fd);
 }
 
-lst_t freadLst( const char * filename ) {
-  FILE * fd = fopen( filename, "rb" );
+void fwriteLst(lst_t L, const char *filename)
+{
+	FILE *fd = fopen(filename, "wb");
 
-  assert( fd != NULL );
+	assert(fd != NULL);
 
-  lst_t L = consVide();
-  
-  for( int pos = 1; !feof(fd); pos += 1 ) {
-    profile_t * P = (profile_t *) calloc( 1, sizeof(profile_t) );
-    
-    fread( P, sizeof( profile_t ), 1, fd );
-    if( P->score == 0 ) {
-      free( P );
-    } else {
-      ins( &L, P, pos );
-    }
-  }
+	for (; !estVide(L); L = reste(L))
+	{
+		fwrite(tete(L), sizeof(profile_t), 1, fd);
+	}
 
-  return L;
+	fclose(fd);
 }
 
+lst_t freadLst(const char *filename)
+{
+	FILE *fd = fopen(filename, "rb");
+
+	assert(fd != NULL);
+
+	lst_t L = consVide();
+
+	for (int pos = 1; !feof(fd); pos += 1)
+	{
+		profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
+
+		fread(P, sizeof(profile_t), 1, fd);
+		if (P->score == 0)
+		{
+			free(P);
+		}
+		else
+		{
+			ins(&L, P, pos);
+		}
+	}
+
+	return L;
+}
