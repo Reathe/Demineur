@@ -76,10 +76,14 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
     }
 }
 
-void getFilename(int largeur, int longueur, int nbMines, char *fileName)
+char* getFilename(int largeur, int longueur, int nbMines)
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
 {
-    sprintf(fileName, "%d_%d_%d.txt", largeur, longueur, nbMines);
+    char ch[20];
+    sprintf(ch, "%d_%d_%d.txt", largeur, longueur, nbMines);
+    char* res=calloc(1+strlen(ch),sizeof(char));
+    strcpy(res, ch);
+    return res;
 }
 
 void Bienvenue()
