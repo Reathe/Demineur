@@ -65,9 +65,15 @@ int main()
     system("clear");
     Bienvenue();
     Regles();
-    int largeur, longueur, nbMines, score;
-    ChoixTaille(&largeur, &longueur, &nbMines);
-    score = Partie(largeur, longueur, nbMines);
+    int rejouer;
+    do {
+        int largeur, longueur, nbMines, score;
+        ChoixTaille(&largeur, &longueur, &nbMines);
+        score = Partie(largeur, longueur, nbMines);
+        if (score>0)
+            EnregistrerScore(largeur, longueur, nbMines, score);
+        rejouer = Rejouer();
+    } while (rejouer);
     exit(0);
 }
 

@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "structure.h"
 #include "GestionProfiles/tadlst.h"
+#include "GestionProfiles/tadpro.h"
+#include "GestionProfiles/io.h"
+#include "string.h"
 
 void clearBuffer()
 //vide le buffer de l'entrée standard
@@ -77,20 +80,84 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
     }
 }
 
-char* getFilename(int largeur, int longueur, int nbMines)
+bool Rejouer()
+{
+    char rejouer;
+    clearBuffer();
+    printf("Rejouer ? (o/n)\n");
+    scanf("%c", &rejouer);
+    clearBuffer();
+    if (rejouer == 'o')
+        return true;
+    else
+        return false;
+}
+char *getFilename(int largeur, int longueur, int nbMines)
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
 {
     char ch[20];
     sprintf(ch, "%d_%d_%d.txt", largeur, longueur, nbMines);
-    char* res=calloc(1+strlen(ch),sizeof(char));
+    char *res = calloc(1 + strlen(ch), sizeof(char));
     strcpy(res, ch);
     return res;
 }
-
+void ScanNomPrenom(char *nom, char *prenom)
+{
+    printf("Entrez votre nom\n");
+    clearBuffer();
+    scanf("%s", nom);
+    printf("Entrez votre prenom\n");
+    clearBuffer();
+    scanf("%s", prenom);
+}
 int Classement(int score, lst_t L)
 //retourne le classement d'un joueur
 {
-    
+    int Classement = 1;
+    while (!estVide(L) && score > readScore(tete(L)))
+    {
+        Classement++;
+        L = reste(L);
+    }
+    return Classement;
+}
+bool FichierExiste(char* FileName){
+    FILE * fichier = fopen(FileName, "r+");
+    if (fichier == NULL)
+        /* Le fichier n'existe pas */
+        return false;
+    else
+    {
+        /* Le fichier existe et on le referme aussitôt */
+        fclose(fichier);
+        return true;
+    }
+}
+void EnregistrerScore(int largeur, int longueur, int nbMines, int score)
+{
+    char enregister;
+    char nom[sz], prenom[sz];
+    char *FileName = getFilename(largeur, longueur, nbMines);
+    lst_t L;
+    int classement=1;
+
+    printf("%s", FileName);
+    if (FichierExiste(FileName))
+        L = fscanLst(FileName);
+    else
+        L = consVide();
+    classement = Classement(score, L);
+    printf("Vous avez fait le démineur %dx%d avec %d bombes en %d secondes. Vous etes classe numéro %d Voulez vous enregister votre score ? (o/n)\n",
+     largeur, longueur, nbMines, score/1000.0, classement);
+
+    scanf("%c", &enregister);
+    if (enregister == 'o')
+    {
+        ScanNomPrenom(nom, prenom);
+        profile_t *pro = consProfile(nom, prenom, score);
+        ins(&L, pro, classement);
+        fprintLst(L, FileName);
+    }
 }
 
 void Bienvenue()
