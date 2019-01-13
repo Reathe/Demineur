@@ -33,7 +33,7 @@ void init_TTMines(TTMines *T, TCurseur *C)
         {
             lin = rand() % (Larg(T));
             col = rand() % (Long(T));
-        } while (mines[col + lin * Long(T)] == 1 && mines[col + lin * Long(T)] == 2);
+        } while (mines[col + lin * Long(T)] == 1 || mines[col + lin * Long(T)] == 2);
         mines[col + lin * Long(T)] = 1;
     }
     
