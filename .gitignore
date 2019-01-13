@@ -2,3 +2,4 @@
 Demineur
 *.o
 .vscode
+*.txt
