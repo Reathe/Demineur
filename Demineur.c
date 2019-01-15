@@ -15,7 +15,7 @@ int Partie(int largeur, int longueur, int nbMines)
     TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
-    int tempsDebut = time(NULL), score = 0;
+    int tempsDebut = clock(), score = 0;
     C = consCurseur();
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
@@ -50,7 +50,7 @@ int Partie(int largeur, int longueur, int nbMines)
     else if (nombCasesRest(T) == nombMines(T))
     {
         printf("Vous avez gagné !\n");
-        score = time(NULL) - tempsDebut;
+        score = clock() - tempsDebut;
     }
     else if (dir == Quitter)
         printf("Vous avez quitté la partie en cours.\n");
@@ -62,7 +62,7 @@ int Partie(int largeur, int longueur, int nbMines)
 int main()
 {
     srand(time(NULL));
-    //system("clear");
+    system("clear");
     Bienvenue();
     Regles();
     int choix;
