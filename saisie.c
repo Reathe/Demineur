@@ -18,9 +18,9 @@ bool checkBuffer()
     if (getchar() != '\n')
     {
         clearBuffer();
-        return Faux;
+        return false;
     }
-    return Vrai;
+    return true;
 }
 
 void ChoixTaille(int *largeur, int *longueur, int *nbMines)
@@ -32,7 +32,8 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
     do
     {
         printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
-        scanf("%c", &diff);
+        //scanf("%c", &diff);
+        diff = getchar();
         clearBuffer();
     } while (diff != 'F' && diff != 'f' && diff != 'M' && diff != 'm' && diff != 'D' && diff != 'd' && diff != 'P' && diff != 'p');
 
@@ -83,14 +84,21 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 bool Rejouer()
 {
     char rejouer;
-    clearBuffer();
-    printf("Rejouer ? (o/n)\n");
-    scanf("%c", &rejouer);
-    clearBuffer();
-    if (rejouer == 'o')
-        return true;
-    else
-        return false;
+    bool res;
+    do
+    {
+        clearBuffer();
+        printf("Rejouer ? (o/n)\n");
+        scanf("%c", &rejouer);
+        clearBuffer();
+        if (rejouer == 'o')
+            res = true;
+        else if (rejouer == 'n')
+            res = false;
+        else
+            printf("Saisie invalide.\n");
+    } while (rejouer != 'o' && rejouer != 'n');
+    return res;
 }
 char *getFilename(int largeur, int longueur, int nbMines)
 //restitue le nom du fichier pour une taille de grille et un nombre de mine donné
@@ -102,6 +110,7 @@ char *getFilename(int largeur, int longueur, int nbMines)
     return res;
 }
 void ScanNomPrenom(char *nom, char *prenom)
+//saisie le nom et prenom d'un joueur
 {
     printf("Entrez votre nom\n");
     clearBuffer();
@@ -121,8 +130,10 @@ int Classement(int score, lst_t L)
     }
     return Classement;
 }
-bool FichierExiste(char* FileName){
-    FILE * fichier = fopen(FileName, "r+");
+bool FichierExiste(char *FileName)
+//retourne vrai si le fichier existe et faux sinon
+{
+    FILE *fichier = fopen(FileName, "r+");
     if (fichier == NULL)
         /* Le fichier n'existe pas */
         return false;
@@ -134,21 +145,21 @@ bool FichierExiste(char* FileName){
     }
 }
 void EnregistrerScore(int largeur, int longueur, int nbMines, int score)
+//Demande à l'utilisateur s'il veut enregistrer son score, si oui, le fait.
 {
     char enregister;
     char nom[sz], prenom[sz];
     char *FileName = getFilename(largeur, longueur, nbMines);
-    lst_t L;
-    int classement=1;
+    lst_t L = consVide();
+    int classement = 1;
 
-    printf("%s", FileName);
+    //printf("%s", FileName);
     if (FichierExiste(FileName))
         L = fscanLst(FileName);
-    else
-        L = consVide();
+
     classement = Classement(score, L);
     printf("Vous avez fait le démineur %dx%d avec %d bombes en %d secondes. Vous etes classe numéro %d Voulez vous enregister votre score ? (o/n)\n",
-     largeur, longueur, nbMines, score/1000.0, classement);
+           largeur, longueur, nbMines, score / 1000, classement);
 
     scanf("%c", &enregister);
     if (enregister == 'o')
@@ -157,7 +168,47 @@ void EnregistrerScore(int largeur, int longueur, int nbMines, int score)
         profile_t *pro = consProfile(nom, prenom, score);
         ins(&L, pro, classement);
         fprintLst(L, FileName);
+        freeProfile(pro);
     }
+    free(FileName);
+    freeLst(&L);
+}
+void AfficherClassement(int largeur, int longueur, int nbMines)
+//affiche le classement pour une largeur, longueur et un nb de mine donné
+{
+    char *filename = getFilename(largeur, longueur, nbMines);
+    if (!FichierExiste(filename))
+    {
+        printf("Il n'y a aucune donnée pour le classement demander.\n");
+        free(filename);
+    }
+    else
+    {
+        lst_t L = consVide();
+        L = fscanLst(filename);
+        printLst(L);
+        free(filename);
+        freeLst(&L);
+    }
+}
+
+int ChoixMenu()
+//affiche le menu et saisie la reponse de l'utilisateur
+{
+    int choix = -1;
+    do
+    {
+        printf("Que voulez-vous faire ?\n\
+1. Jouer\n\
+2. Consulter les scores\n\
+3. Consulter les règles\n\
+4. Quitter\n");
+        scanf("%d", &choix);
+        clearBuffer();
+        if (choix < 1 || choix > 4)
+            printf("Saisie invalide.\n");
+    } while (choix < 1 || choix > 4);
+    return choix;
 }
 
 void Bienvenue()

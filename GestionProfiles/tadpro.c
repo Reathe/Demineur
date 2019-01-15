@@ -69,5 +69,5 @@ void writeScore( const int Score, profile_t * P ) {
 }
 
 void printPro( const profile_t * P ) {
-  printf( "(%s %s %d)", P->forename, P->name, P->score );
+  printf("%s %s : %d", P->forename, P->name, P->score );
 }

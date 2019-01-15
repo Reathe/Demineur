@@ -63,9 +63,11 @@ void ins( lst_t * ptrL,  profile_t * P, int pos ) {
 }
 
 void printLst( lst_t L ) {
-  printf( "[" );
-  for( ; !estVide( L ); L = reste( L ) ) {
+  int i;
+  printf( "Classement :\n" );
+  for(i=1 ; !estVide( L ); L = reste( L ), i++ ) {
+    printf("%d. ", i);
     printPro( tete( L ) );
+    printf("\n");
   }
-  printf( "]\n" );
 }

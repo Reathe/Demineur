@@ -15,7 +15,7 @@ int Partie(int largeur, int longueur, int nbMines)
     TTMines *T;
     TCurseur *C;
     bool defaite = Faux;
-    int tempsDebut = clock(), score = 0;
+    int tempsDebut = time(NULL), score = 0;
     C = consCurseur();
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient générées)
@@ -26,13 +26,13 @@ int Partie(int largeur, int longueur, int nbMines)
         aff_TTMines(T, C, Debut);
         printf("Lin=%d, col=%d\n", Lin(C) + 1, Col(C) + 1);
         dir = getc(stdin);
-        if (dir!=DecouvrirCase)
+        if (dir != DecouvrirCase)
             instruction(T, C, dir, &defaite);
     }
 
     init_TTMines(T, C);
     instruction(T, C, dir, &defaite);
-    
+
     while (dir != Quitter && !defaite && nombCasesRest(T) != nombMines(T))
     {
         system("clear");
@@ -50,7 +50,7 @@ int Partie(int largeur, int longueur, int nbMines)
     else if (nombCasesRest(T) == nombMines(T))
     {
         printf("Vous avez gagné !\n");
-        score = clock() - tempsDebut;
+        score = time(NULL) - tempsDebut;
     }
     else if (dir == Quitter)
         printf("Vous avez quitté la partie en cours.\n");
@@ -62,18 +62,37 @@ int Partie(int largeur, int longueur, int nbMines)
 int main()
 {
     srand(time(NULL));
-    system("clear");
+    //system("clear");
     Bienvenue();
     Regles();
-    int rejouer;
-    do {
-        int largeur, longueur, nbMines, score;
-        ChoixTaille(&largeur, &longueur, &nbMines);
-        score = Partie(largeur, longueur, nbMines);
-        if (score>0)
-            EnregistrerScore(largeur, longueur, nbMines, score);
-        rejouer = Rejouer();
-    } while (rejouer);
+    int choix;
+    do
+    {
+        choix = ChoixMenu();
+        if (choix == 1)
+        {
+            bool rejouer;
+            int largeur, longueur, nbMines, score;
+            ChoixTaille(&largeur, &longueur, &nbMines);
+            do
+            {
+                score = Partie(largeur, longueur, nbMines);
+                if (score > 0)
+                    EnregistrerScore(largeur, longueur, nbMines, score);
+                rejouer = Rejouer();
+            } while (rejouer);
+        }
+        else if (choix == 2)
+        {
+            int largeur, longueur, nbMines;
+            ChoixTaille(&largeur, &longueur, &nbMines);
+            AfficherClassement(largeur, longueur, nbMines);
+        }
+        else if (choix == 3)
+        {
+            system("clear");
+            Regles();
+        }
+    } while (choix != 4);
     exit(0);
 }
-
