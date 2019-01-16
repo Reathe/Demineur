@@ -7,10 +7,11 @@
    elt_t : le type d'un élément de la liste,
    lst_t : le type d'une liste, càd. un pointeur sur son premier élément.
 */
-typedef struct eltList {
-  profile_t * P;
-  struct eltList * suc;
-} elt_t, * lst_t;
+typedef struct eltList
+{
+  profile_t *P;
+  struct eltList *suc;
+} elt_t, *lst_t;
 
 /**
    @brief les fonctions membres du TAD lst_t
@@ -25,16 +26,16 @@ typedef struct eltList {
 */
 lst_t consVide();
 
-void freeLst( lst_t * );
+void freeLst(lst_t *);
 
-bool estVide( const lst_t );
+bool estVide(const lst_t);
 
-profile_t * tete( lst_t );
+profile_t *tete(lst_t);
 
-lst_t reste( lst_t );
-  
-int length( lst_t );
+lst_t reste(lst_t);
 
-void ins( lst_t *, profile_t *, int );
+int length(lst_t);
 
-void printLst( lst_t );
+void ins(lst_t *, profile_t *, int);
+
+void printLst(lst_t);

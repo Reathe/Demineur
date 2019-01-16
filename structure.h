@@ -12,7 +12,7 @@
 //Charactères utilisateurs
 #define DecouvrirCase 'g'
 #define PoserDrapeau 'f'
-#define Quitter 'p' 
+#define Quitter 'p'
 typedef enum
 {
     Debut,
@@ -46,8 +46,8 @@ typedef struct TCurseur
 
 //Fonctions disponibles
 
-    //Création/destrucion
-void init_TTMines(TTMines *T,TCurseur *C);
+//Création/destrucion
+void init_TTMines(TTMines *T, TCurseur *C);
 void free_TTMines(TTMines *T);
 TTMines *consTTMines(int largeur, int longueur, int nbombe);
 //Consultation TTMines
@@ -59,20 +59,20 @@ int nombMines(TTMines *T);
 int nombDrapeau(TTMines *T);
 int nombCasesRest(TTMines *T);
 
-    //Modification TTMines
+//Modification TTMines
 void modifTabVisible(TTMines *T, int lin, int col, int nouvVal);
 void modifTabCase(TTMines *T, int lin, int col, char nouvVal);
 void modifNombDrapeau(TTMines *T, int nouvVal);
 void decrementNombCasesRest(TTMines *T);
 
-    //Primitives Curseur
+//Primitives Curseur
 TCurseur *consCurseur();
 void modifCurseur(TCurseur *C, int lin, int col);
 void free_TCurseur(TCurseur *C);
 int Lin(TCurseur *C);
 int Col(TCurseur *C);
 
-    //Autres
+//Autres
 void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment);
 int somme_autour(int *t, int lin, int col, int wid, int len);
 void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);

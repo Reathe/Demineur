@@ -36,7 +36,7 @@ void init_TTMines(TTMines *T, TCurseur *C)
         } while (mines[col + lin * Long(T)] == 1 || mines[col + lin * Long(T)] == 2);
         mines[col + lin * Long(T)] = 1;
     }
-    
+
     //On remet des 0 à la place des 2
     remplirCaseEtVoisines(mines, C, 0, Larg(T), Long(T));
 
@@ -132,7 +132,7 @@ void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
                 else
                     printf(charCase);
             }
-            
+
             if ((i == Lin(C) && j == Col(C)) || (i == Lin(C) && j == Col(C) - 1))
                 printf("|");
             else

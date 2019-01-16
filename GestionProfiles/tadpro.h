@@ -11,7 +11,8 @@
    score : le score de la personne.
 */
 #define sz 20
-typedef struct {
+typedef struct
+{
   char name[sz];
   char forename[sz];
   int score;
@@ -29,22 +30,22 @@ typedef struct {
    readScore : lecture du champ score,
    writeScore : ecriture dans le champ score,
 */
-profile_t * consEmptyProfile();
+profile_t *consEmptyProfile();
 
-profile_t * consProfile( char *, char *, int );
+profile_t *consProfile(char *, char *, int);
 
-void freeProfile( profile_t * );
+void freeProfile(profile_t *);
 
-char * readName( const profile_t * );
+char *readName(const profile_t *);
 
-void writeName( const char *, profile_t * );
+void writeName(const char *, profile_t *);
 
-char * readForename( const profile_t * );
+char *readForename(const profile_t *);
 
-void writeForename( const char *, profile_t * );
+void writeForename(const char *, profile_t *);
 
-int readScore( const profile_t * );
+int readScore(const profile_t *);
 
-void writeScore( const int, profile_t * );
+void writeScore(const int, profile_t *);
 
-void printPro( const profile_t * );
+void printPro(const profile_t *);

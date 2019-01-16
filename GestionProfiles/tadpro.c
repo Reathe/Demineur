@@ -5,69 +5,78 @@
 #include "string.h"
 #include "tadpro.h"
 
-profile_t * consEmptyProfile() {
-  profile_t * P = (profile_t *) calloc( 1, sizeof( profile_t ) );
+profile_t *consEmptyProfile()
+{
+  profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
 
-  assert( P != NULL );
+  assert(P != NULL);
 
   return P;
 }
 
-profile_t * consProfile( char * name, char * forename, int score ) {
-  profile_t * P = (profile_t *) calloc( 1, sizeof( profile_t ) );
+profile_t *consProfile(char *name, char *forename, int score)
+{
+  profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
 
-  assert( P != NULL );
+  assert(P != NULL);
 
-  strcpy( P->name, name );
-  strcpy( P->forename, forename );
+  strcpy(P->name, name);
+  strcpy(P->forename, forename);
   P->score = score;
 
   return P;
 }
 
-void freeProfile( profile_t * P ) {
-  assert( P != NULL );
+void freeProfile(profile_t *P)
+{
+  assert(P != NULL);
 
-  free( P );
+  free(P);
 }
 
-char * readName( const profile_t * P ) {
-  assert( P != NULL );
+char *readName(const profile_t *P)
+{
+  assert(P != NULL);
 
-  return (char *) P->name;
+  return (char *)P->name;
 }
 
-void writeName( const char * name, profile_t * P ) {
-  assert( P != NULL );
+void writeName(const char *name, profile_t *P)
+{
+  assert(P != NULL);
 
-  strcpy( P->name, name );
-}
-  
-
-char * readForename( const profile_t * P ) {
-  assert( P != NULL );
-
-  return (char *) P->forename;
+  strcpy(P->name, name);
 }
 
-void writeForename( const char * forename, profile_t * P ) {
-  assert( P != NULL );
+char *readForename(const profile_t *P)
+{
+  assert(P != NULL);
 
-  strcpy( P->name, forename );
+  return (char *)P->forename;
 }
 
-int readScore( const profile_t * P ) {
-  assert( P != NULL );
+void writeForename(const char *forename, profile_t *P)
+{
+  assert(P != NULL);
+
+  strcpy(P->name, forename);
+}
+
+int readScore(const profile_t *P)
+{
+  assert(P != NULL);
 
   return P->score;
 }
 
-void writeScore( const int Score, profile_t * P ) {
-  assert( P != NULL );
+void writeScore(const int Score, profile_t *P)
+{
+  assert(P != NULL);
 
   P->score = Score;
 }
 
-void printPro( const profile_t * P ) {
-  printf("%s %s : %d", P->forename, P->name, P->score );
+void printPro(const profile_t *P)
+{
+  printf("%s %s : %d", P->forename, P->name, P->score);
 }
