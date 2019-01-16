@@ -59,7 +59,7 @@ void ins(lst_t *ptrL, profile_t *P, int pos)
 
   E->P = P;
 
-  if (estVide(*ptrL))
+  if (pos == 1)
   {
     E->suc = *ptrL;
     *ptrL = E;
