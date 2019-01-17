@@ -17,13 +17,13 @@ TTMines *consTTMines(int largeur, int longueur, int nbombe)
     return T;
 }
 void init_TTMines(TTMines *T, TCurseur *C)
-//Initialise la grille du démineur
+//Initialise la grille du demineur
 {
     int i, j;
-    //Création des mines//
+    //Creation des mines//
     int *mines = calloc(Larg(T) * Long(T), sizeof(int));
 
-    //On met des 2 à la case de départ et ses voisines pour ne pas y mettre de bombe
+    //On met des 2 à la case de depart et ses voisines pour ne pas y mettre de bombe
     remplirCaseEtVoisines(mines, C, 2, Larg(T), Long(T));
 
     int lin, col;
@@ -40,7 +40,7 @@ void init_TTMines(TTMines *T, TCurseur *C)
     //On remet des 0 à la place des 2
     remplirCaseEtVoisines(mines, C, 0, Larg(T), Long(T));
 
-    //Copie des mines dans la structure de données
+    //Copie des mines dans la structure de donnees
     for (i = 0; i < Larg(T); i++)
         for (j = 0; j < Long(T); j++)
             if (mines[j + i * Long(T)] == 1)
@@ -48,47 +48,6 @@ void init_TTMines(TTMines *T, TCurseur *C)
             else
                 modifTabCase(T, i, j, '0' + somme_autour(mines, i, j, Larg(T), Long(T)));
     free(mines);
-}
-
-void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len)
-//Remplit une case et ses 8 voisines de la valeur val
-{
-    int i, j;
-    for (i = Lin(C) - 1; i <= Lin(C) + 1; i++)
-        for (j = Col(C) - 1; j <= Col(C) + 1; j++)
-            if (i >= 0 && i < wid && j >= 0 && j < len)
-                //Si à l'intérieur du tableau
-                t[j + i * len] = val;
-}
-
-void decouvrir_case(TTMines *T, int lin, int col, bool *defaite)
-//Rend la case visible à (lin,col) visible, et si c'est un 0,
-//elle rend visible toutes les cases autour jusqu'à avoir des chiffres
-{
-    if (valTabCase(T, lin, col) == '0')
-        visible_0(T, lin, col);
-    else
-    {
-        modifTabVisible(T, lin, col, Vrai);
-        decrementNombCasesRest(T);
-        if (valTabCase(T, lin, col) == 'M')
-            *defaite = Vrai;
-    }
-}
-void drapeau_case(TTMines *T, TCurseur *C)
-//Si la case est déjà un drapeau, l'enlève
-//Si c'est une case non Visible, met un drapeau
-{
-    if (valTabVisible(T, Lin(C), Col(C)) == Drapeau)
-    {
-        modifTabVisible(T, Lin(C), Col(C), Faux);
-        modifNombDrapeau(T, nombDrapeau(T) - 1);
-    }
-    else if (valTabVisible(T, Lin(C), Col(C)) == Faux)
-    {
-        modifTabVisible(T, Lin(C), Col(C), Drapeau);
-        modifNombDrapeau(T, nombDrapeau(T) + 1);
-    }
 }
 
 void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
@@ -139,100 +98,6 @@ void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment)
                 printf(" ");
         }
         printf("\n");
-    }
-}
-
-void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite)
-//Realise les opérations sur la grille et le curseur
-//en fonction de l'instruction qu'on lui donne
-{
-    int lin = Lin(C),
-        col = Col(C),
-        wid = Larg(T),
-        len = Long(T);
-    switch (dir)
-    {
-    case 'A': //Fall through
-    case 'z':
-        if (lin > 0)
-            modifCurseur(C, lin - 1, col);
-        break;
-    case 'D': //Fall through
-    case 'q':
-        if (col > 0)
-            modifCurseur(C, lin, col - 1);
-        break;
-    case 'B': //Fall through
-    case 's':
-        if (lin < wid - 1)
-            modifCurseur(C, lin + 1, col);
-        break;
-    case 'C': //Fall through
-    case 'd':
-        if (col < len - 1)
-            modifCurseur(C, lin, col + 1);
-        break;
-    case DecouvrirCase:
-        if (valTabVisible(T, lin, col) == Vrai && valTabCase(T, lin, col) != '0')
-            //Si la case est déjà visible et
-            //qu'elle est différente de '0'
-            Verif_drapeau(T, C, defaite);
-        else if (valTabVisible(T, lin, col) != Drapeau)
-            decouvrir_case(T, lin, col, defaite);
-        break;
-    case PoserDrapeau:
-        drapeau_case(T, C);
-        break;
-    }
-}
-int somme_autour(int *t, int lin, int col, int wid, int len)
-//Retourne la somme des entiers autour de la case t[lin][col]
-{
-    int somme = 0, i, j;
-    for (i = lin - 1; i <= lin + 1; i++)
-        for (j = col - 1; j <= col + 1; j++)
-            if ((i != lin || j != col) && (i >= 0 && i < wid && j >= 0 && j < len))
-                //Si pas au milieu et à l'intérieur du tableau
-                somme += t[j + i * len];
-    return somme;
-}
-void visible_0(TTMines *T, int lin, int col)
-//Rend visible toutes les cases
-{
-    int i, j;
-    modifTabVisible(T, lin, col, Vrai);
-    decrementNombCasesRest(T);
-    if (valTabCase(T, lin, col) == '0')
-    {
-        for (i = lin - 1; i <= lin + 1; i++)
-            for (j = col - 1; j <= col + 1; j++)
-                if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Faux))
-                    //Si pas au milieu et si à l'intérieur du tableau et si la case est invisible
-                    visible_0(T, i, j);
-    }
-}
-
-void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite)
-//Si le nombre de drapeaux autour de la case est égal à sa valeur
-//On Rend visible toutes les cases autour de celle-ci
-{
-    int lin = Lin(C), col = Col(C), i, j;
-    int nbDrapeau = 0;
-    //Calcul du nombre de drapeaux autour de la case lin,col
-    for (i = lin - 1; i <= lin + 1; i++)
-        for (j = col - 1; j <= col + 1; j++)
-            if ((i != lin || j != col) && (i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && (valTabVisible(T, i, j) == Drapeau))
-                //Si pas au milieu et à l'intérieur du tableau et si la case i,j est un drapeau
-                nbDrapeau++;
-
-    //Si le nombre de drapeaux est égal au nombre de drapeaux qu'indique la case
-    //On rend visible toutes les cases autour
-    if (nbDrapeau == valTabCase(T, Lin(C), Col(C)) - '0')
-    {
-        for (i = lin - 1; i <= lin + 1; i++)
-            for (j = col - 1; j <= col + 1; j++)
-                if ((i >= 0 && i < Larg(T) && j >= 0 && j < Long(T)) && valTabVisible(T, i, j) == Faux)
-                    decouvrir_case(T, i, j, defaite);
     }
 }
 

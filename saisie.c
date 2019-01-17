@@ -6,7 +6,7 @@
 #include "string.h"
 
 void clearBuffer()
-//vide le buffer de l'entrée standard
+//vide le buffer de l'entree standard
 {
     while (getchar() != '\n')
         ;
@@ -28,11 +28,10 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
 {
     char diff;
     bool bufferVide;
-    //system("clear");
+    system("clear");
     do
     {
         printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
-        //scanf("%c", &diff);
         diff = getchar();
         clearBuffer();
     } while (diff != 'F' && diff != 'f' && diff != 'M' && diff != 'm' && diff != 'D' && diff != 'd' && diff != 'P' && diff != 'p');
@@ -101,23 +100,20 @@ bool Rejouer()
     return res;
 }
 char *getFilename(int largeur, int longueur, int nbMines)
-//restitue le nom du fichier pour une taille de grille et un nombre de mine donné
+//restitue le nom du fichier pour une taille de grille et un nombre de mine donne
 {
-    char ch[20];
-    sprintf(ch, "%d_%d_%d.txt", largeur, longueur, nbMines);
+    char ch[30];
+    sprintf(ch, "save/%d_%d_%d.txt", largeur, longueur, nbMines);
     char *res = calloc(1 + strlen(ch), sizeof(char));
     strcpy(res, ch);
     return res;
 }
-void ScanNomPrenom(char *nom, char *prenom)
+void ScanNom(char *nom)
 //saisie le nom et prenom d'un joueur
 {
     printf("Entrez votre nom\n");
     clearBuffer();
     scanf("%s", nom);
-    printf("Entrez votre prenom\n");
-    clearBuffer();
-    scanf("%s", prenom);
 }
 int Classement(int score, lst_t L)
 //retourne le classement d'un joueur
@@ -147,39 +143,41 @@ bool FichierExiste(char *FileName)
 void EnregistrerScore(int largeur, int longueur, int nbMines, int score)
 //Demande à l'utilisateur s'il veut enregistrer son score, si oui, le fait.
 {
-    char enregister;
-    char nom[sz], prenom[sz];
+    char enregistrer;
+    char nom[sz];
     char *FileName = getFilename(largeur, longueur, nbMines);
     lst_t L = consVide();
     int classement = 1;
 
-    //printf("%s", FileName);
     if (FichierExiste(FileName))
         L = fscanLst(FileName);
 
     classement = Classement(score, L);
-    printf("Vous avez fait le démineur %dx%d avec %d bombes en %d secondes. Vous etes classe numéro %d Voulez vous enregister votre score ? (o/n)\n",
-           largeur, longueur, nbMines, score / 1000, classement);
+    printf("Vous avez fait le demineur %dx%d avec %d bombes en %d secondes. Vous etes classe numero %d Voulez vous enregister votre score ? (o/n)\n",
+           largeur, longueur, nbMines, score, classement);
 
-    scanf("%c", &enregister);
-    if (enregister == 'o')
+    do
     {
-        ScanNomPrenom(nom, prenom);
-        profile_t *pro = consProfile(nom, prenom, score);
-        ins(&L, pro, classement);
-        fprintLst(L, FileName);
-        freeProfile(pro);
-    }
+        scanf("%c", &enregistrer);
+        if (enregistrer == 'o')
+        {
+            ScanNom(nom);
+            profile_t *pro = consProfile(nom, score);
+            ins(&L, pro, classement);
+            fprintLst(L, FileName);
+        }
+    } while (enregistrer != 'o' && enregistrer != 'n');
     free(FileName);
     freeLst(&L);
 }
 void AfficherClassement(int largeur, int longueur, int nbMines)
-//affiche le classement pour une largeur, longueur et un nb de mine donné
+//affiche le classement pour une largeur, longueur et un nb de mine donne
 {
+    system("clear");
     char *filename = getFilename(largeur, longueur, nbMines);
     if (!FichierExiste(filename))
     {
-        printf("Il n'y a aucune donnée pour le classement demander.\n");
+        printf("Il n'y a aucune donnee pour le classement demande.\n");
         free(filename);
     }
     else
@@ -190,6 +188,7 @@ void AfficherClassement(int largeur, int longueur, int nbMines)
         free(filename);
         freeLst(&L);
     }
+    printf("\n");
 }
 
 int ChoixMenu()
@@ -213,16 +212,16 @@ int ChoixMenu()
 
 void Bienvenue()
 {
-    printf("Bienvenue dans El Famoso Démineur © Boucksom/Bachourian.\n");
+    printf("Bienvenue dans El Famoso Demineur © Boucksom/Bachourian.\n");
 }
 void Regles()
 {
     printf("Les règles sont simples. Survivez, ou mourrez. Vous devez trouver l'emplacement de toutes les mines sans tout faire exploser...\
 Vos outils seront les suivants: \n\
 -Votre clavier \n\
--votre ordinateur (sous linux pour la meilleure expérience utilsateur)\n\
+-votre ordinateur (sous linux pour la meilleure experience utilsateur)\n\
 -un cerveau\n\
-Même si ça n'est pas donné à tout le monde, nous auront besoin de ces trois choses !\n\
-Vous utiliserez les fleches (ou zqsd) pour vous deplacer,la touche %c pour découvrir une case, la touche %c pour poser un drapeau, et la touche %c pour quitter.\n\n",
+Même si ça n'est pas donne à tout le monde, nous auront besoin de ces trois choses !\n\
+Vous utiliserez les fleches (ou zqsd) pour vous deplacer,la touche %c pour decouvrir une case, la touche %c pour poser un drapeau, et la touche %c pour quitter.\n\n",
            DecouvrirCase, PoserDrapeau, Quitter);
 }

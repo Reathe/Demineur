@@ -14,7 +14,6 @@
 typedef struct
 {
   char name[sz];
-  char forename[sz];
   int score;
 } profile_t;
 
@@ -32,17 +31,13 @@ typedef struct
 */
 profile_t *consEmptyProfile();
 
-profile_t *consProfile(char *, char *, int);
+profile_t *consProfile(char *, int);
 
 void freeProfile(profile_t *);
 
 char *readName(const profile_t *);
 
 void writeName(const char *, profile_t *);
-
-char *readForename(const profile_t *);
-
-void writeForename(const char *, profile_t *);
 
 int readScore(const profile_t *);
 

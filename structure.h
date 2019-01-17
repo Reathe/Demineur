@@ -5,7 +5,7 @@
 #define Faux 0
 #define Drapeau -1
 //Charactères TCase
-#define charMine "M" //"M" ou  "💣"
+#define charMine "☢" //"M" ou  "☢"
 #define charDrapeau "⚑"
 #define charCase "◼"
 #define charCaseOuverte "□"
@@ -22,17 +22,17 @@ typedef enum
 
 typedef struct TCase
 {
-    //La case sera affiché ssi Visible == 1
-    //La case est cachée si Visible == 0
+    //La case sera affiche ssi Visible == 1
+    //La case est cachee si Visible == 0
     //La case est un drapeau sinon (Visible == -1)
-    //Le charactère Case qui est le charactère qui doit être affiché à l'utilisateur
+    //Le charactère Case qui est le charactère qui doit être affiche à l'utilisateur
     int Visible;
     char Case;
 } TCase;
 
 typedef struct TTMines
 {
-    //Un tableau de cases (utilisé comme un tableau à deux dimensions)
+    //Un tableau de cases (utilise comme un tableau à deux dimensions)
     // avec largeur lignes et longueur colonnes
     TCase *TMine;
     int largeur, longueur;
@@ -46,7 +46,7 @@ typedef struct TCurseur
 
 //Fonctions disponibles
 
-//Création/destrucion
+//Creation/destrucion
 void init_TTMines(TTMines *T, TCurseur *C);
 void free_TTMines(TTMines *T);
 TTMines *consTTMines(int largeur, int longueur, int nbombe);
@@ -74,11 +74,4 @@ int Col(TCurseur *C);
 
 //Autres
 void aff_TTMines(TTMines *T, TCurseur *C, TMomentPartie moment);
-int somme_autour(int *t, int lin, int col, int wid, int len);
-void instruction(TTMines *T, TCurseur *C, char dir, bool *defaite);
-void visible_0(TTMines *T, int lin, int col);
-void drapeau_case(TTMines *T, TCurseur *C);
-void Verif_drapeau(TTMines *T, TCurseur *C, bool *defaite);
-void decouvrir_case(TTMines *T, int lin, int col, bool *defaite);
-void remplirCaseEtVoisines(int *t, TCurseur *C, int val, int wid, int len);
 //Fin
