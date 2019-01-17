@@ -13,8 +13,8 @@
 #define sz 20
 typedef struct
 {
-  char name[sz];
-  int score;
+	char name[sz];
+	int score;
 } profile_t;
 
 /**

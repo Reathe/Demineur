@@ -9,8 +9,8 @@
 */
 typedef struct eltList
 {
-  profile_t *P;
-  struct eltList *suc;
+	profile_t *P;
+	struct eltList *suc;
 } elt_t, *lst_t;
 
 /**

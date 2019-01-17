@@ -7,61 +7,61 @@
 
 profile_t *consEmptyProfile()
 {
-  profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
+	profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
 
-  assert(P != NULL);
+	assert(P != NULL);
 
-  return P;
+	return P;
 }
 
 profile_t *consProfile(char *name, int score)
 {
-  profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
+	profile_t *P = (profile_t *)calloc(1, sizeof(profile_t));
 
-  assert(P != NULL);
+	assert(P != NULL);
 
-  strcpy(P->name, name);
-  P->score = score;
+	strcpy(P->name, name);
+	P->score = score;
 
-  return P;
+	return P;
 }
 
 void freeProfile(profile_t *P)
 {
-  assert(P != NULL);
+	assert(P != NULL);
 
-  free(P);
+	free(P);
 }
 
 char *readName(const profile_t *P)
 {
-  assert(P != NULL);
+	assert(P != NULL);
 
-  return (char *)P->name;
+	return (char *)P->name;
 }
 
 void writeName(const char *name, profile_t *P)
 {
-  assert(P != NULL);
+	assert(P != NULL);
 
-  strcpy(P->name, name);
+	strcpy(P->name, name);
 }
 
 int readScore(const profile_t *P)
 {
-  assert(P != NULL);
+	assert(P != NULL);
 
-  return P->score;
+	return P->score;
 }
 
 void writeScore(const int Score, profile_t *P)
 {
-  assert(P != NULL);
+	assert(P != NULL);
 
-  P->score = Score;
+	P->score = Score;
 }
 
 void printPro(const profile_t *P)
 {
-  printf("%s : %d", P->name, P->score);
+	printf("%s : %d", P->name, P->score);
 }
