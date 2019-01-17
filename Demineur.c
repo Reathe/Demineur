@@ -4,6 +4,7 @@
 #include <string.h>
 #include "structure.h"
 #include "saisie.h"
+#include "Demineur.h"
 #include "GestionProfiles/io.h"
 #include "GestionProfiles/tadlst.h"
 #include "GestionProfiles/tadpro.h"

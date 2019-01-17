@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structure.h"
+#include "Demineur.h"
 
 TTMines *consTTMines(int largeur, int longueur, int nbombe)
 //Construit un TTMines avec une grille vide et sa largeur, longueur et nombre de bombe
