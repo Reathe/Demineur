@@ -22,7 +22,7 @@ int Partie(int largeur, int longueur, int nbMines)
     T = consTTMines(largeur, longueur, nbMines);
     //Debut de partie (avant que les bombes soient generees)
     while (dir != Quitter && (dir != DecouvrirCase || valTabVisible(T, Lin(C), Col(C)) == Drapeau))
-    {
+    { //Tant que le joueur n'a pas fait la premiere action
         system("clear");
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
         aff_TTMines(T, C, Debut);
@@ -36,7 +36,7 @@ int Partie(int largeur, int longueur, int nbMines)
     instruction(T, C, dir, &defaite);
 
     while (dir != Quitter && !defaite && nombCasesRest(T) != nombMines(T))
-    {
+    { //Tq le joueur n'a pas quitté, qu'il n'a pas perdu, et qu'il n'a pas gagné
         system("clear");
         printf("Nombre de mines restantes : %d\n", nombMines(T) - nombDrapeau(T));
         aff_TTMines(T, C, Milieu);

@@ -212,7 +212,7 @@ int ChoixMenu()
 
 void Bienvenue()
 {
-    printf("Bienvenue dans El Famoso Demineur © Boucksom/Bachourian.\n");
+    printf("Bienvenue dans El Famoso Demineur © Linux Edition Boucksom/Bachourian.\n");
 }
 void Regles()
 {
@@ -222,6 +222,6 @@ Vos outils seront les suivants: \n\
 -votre ordinateur (sous linux pour la meilleure experience utilsateur)\n\
 -un cerveau\n\
 Même si ça n'est pas donne à tout le monde, nous auront besoin de ces trois choses !\n\
-Vous utiliserez les fleches (ou zqsd) pour vous deplacer,la touche %c pour decouvrir une case, la touche %c pour poser un drapeau, et la touche %c pour quitter.\n\n",
+Une fois en partie, vous utiliserez les fleches (ou zqsd) pour vous deplacer,la touche %c pour decouvrir une case, la touche %c pour poser un drapeau, et la touche %c pour quitter.\n\n",
            DecouvrirCase, PoserDrapeau, Quitter);
 }
