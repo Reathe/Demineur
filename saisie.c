@@ -31,7 +31,7 @@ void ChoixTaille(int *largeur, int *longueur, int *nbMines)
     system("clear");
     do
     {
-        printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou personalise (p)\n");
+        printf("Choisissez la difficulte: Facile (f), Moyen (m), Difficile (d), ou Personalise (p)\n");
         diff = getchar();
         clearBuffer();
     } while (diff != 'F' && diff != 'f' && diff != 'M' && diff != 'm' && diff != 'D' && diff != 'd' && diff != 'P' && diff != 'p');
@@ -166,6 +166,8 @@ void EnregistrerScore(int largeur, int longueur, int nbMines, int score)
             ins(&L, pro, classement);
             fprintLst(L, FileName);
         }
+        else if (enregistrer != 'n')
+            printf("Saisie invalide.\n");
     } while (enregistrer != 'o' && enregistrer != 'n');
     free(FileName);
     freeLst(&L);
